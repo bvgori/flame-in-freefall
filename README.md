@@ -23,6 +23,15 @@ El copiloto usa cualquier API compatible con OpenAI: ChatGPT, Gemini (gratis), G
 - `lib/data.ts`: 19 investigaciones (16 listadas en PSI y 3 ACME mencionadas en el reto) más 9 escenarios. **Los rangos numéricos son aproximados**, recopilados de documentación pública. Hay que reemplazarlos por las matrices de ensayo de PSI.
 - `lib/rank.ts`: puntaje = 70 % cercanía gaussiana (O₂ escala 10 pts, presión escala ½ octava, flujo escala 20 cm/s) + 30 % relevancia (prevención, detección, supresión 0–3). Cobertura: ≥ 0.6 cubierto, ≥ 0.2 parcial y el resto brecha.
 
+## Modelo predictivo (`ml/`)
+`ml/flammability.ipynb` (fuente: `ml/flammability.py`, formato jupytext). Pregunta: ¿un material de cabina (PMMA) sigue quemando con este O₂, esta ventilación y esta gravedad?
+- **Datos:** curva límite de NASA y 51 ensayos de BASS-II en la ISS (Olson & Ferkul 2017, NASA/TM-20210011385) para entrenar; 16 ensayos en centrífuga a 0.04-1 g (Olson et al. 2024) solo para validar. Todo en `ml/data/flammability_data.json` con su cita.
+- **EDA:** los ensayos se hacen en el borde del límite y son ruidosos (11 pares casi idénticos con resultado opuesto; la propia curva de NASA acierta 55 %). Se puede predecir el límite, no cada ensayo.
+- **Modelo:** física L(u) = A + B/u + C·u anclada a la curva NASA, con flujo inducido por gravedad u = U_b·gⁿ. n calibrado leave-one-gravity-out. Comparado con regresión logística y XGBoost.
+- **Validación externa:** error del límite 0.16 pts de O₂, 13/16 ensayos bien (XGBoost: 69 %). A 1 g predice 14.9 % (literatura 15.0-15.4 %).
+- **Hallazgos:** la Luna cae justo en la ventilación más peligrosa; cortar la ventilación ahoga el fuego en la ISS pero no en la Luna; no existe un O₂ respirable que sea no inflamable para PMMA.
+- Correr: `python3 -m venv .venv && .venv/bin/pip install -r ml/requirements.txt && cd ml && ../.venv/bin/jupyter nbconvert --to notebook --execute --inplace flammability.ipynb` (en Mac, XGBoost necesita `brew install libomp`). Exporta `lib/predictions.json`, que usa la web.
+
 ## Pitch 30 s
 > NASA propone que la base lunar tenga 34 % de oxígeno a 8 psi. En esa atmósfera las cosas se prenden mucho más fácil que en el aire. Y la pregunta que nos hicimos fue: ¿alguien probó cómo se quema algo ahí, en microgravedad? Juntamos los experimentos de fuego de NASA en un mapa de oxígeno y presión. Y en los datos públicos de PSI, los sólidos, que es de lo que está hecha una nave, solo se probaron con aire normal o menos oxígeno.
 

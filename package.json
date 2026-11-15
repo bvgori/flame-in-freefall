@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "check": "node --no-warnings scripts/check.ts"
+    "check": "node --no-warnings scripts/check.ts && node --no-warnings scripts/check-predict.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.8.0",

@@ -1,0 +1,910 @@
+{
+ "series": [
+  {
+   "id": "pmma_ug_bassII_rods",
+   "material": "cast PMMA rod (clear; r=0.318, 0.476, 0.635 cm mixed)",
+   "gravity_g": 0,
+   "pressure_kPa": 101,
+   "flow_config": "concurrent / axial stagnation (flow onto hemispherical rod tip)",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 Fig. 6.10 (log-x replot of Fig. 6.9). Same data also in Olson & Ferkul, 9th US Natl Combust. Mtg 2015, Fig. 4, https://ntrs.nasa.gov/citations/20150008961",
+   "how_extracted": "digitized from TM Fig. 6.10 (vector PDF rendered at 4x). x-axis is normalized forced stretch a=(3/2)(U/r)(r/r_o)^0.5, r_o=0.318 cm, NOT flow. flow_cm_s = a*r_o/1.5 = equivalent forced flow for the 0.318 cm rod (same U<->a mapping the authors use in TM Fig. 6.22, U/U_D, U_D=2 cm/s). For the larger rods the true U is higher by sqrt(r/r_o) (x1.22 or x1.41) but rod size is not identifiable per point in this figure. Uncertainty: O2 +-0.05 vol% (digitizing; sensor resolution 0.1%), a +-5% digitizing, but authors' flow error bars at a<5 s^-1 span roughly x0.5-x2 (U<1 cm/s poorly resolved). O2 is FINAL (post-burn) chamber O2.",
+   "points": [
+    {
+     "stretch_s-1": 1.12,
+     "flow_cm_s": 0.24,
+     "o2_pct": 15.61,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 1.27,
+     "flow_cm_s": 0.27,
+     "o2_pct": 16.0,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 1.58,
+     "flow_cm_s": 0.34,
+     "o2_pct": 16.72,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 1.58,
+     "flow_cm_s": 0.34,
+     "o2_pct": 16.72,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 1.61,
+     "flow_cm_s": 0.34,
+     "o2_pct": 17.71,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 1.83,
+     "flow_cm_s": 0.39,
+     "o2_pct": 16.01,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 1.83,
+     "flow_cm_s": 0.39,
+     "o2_pct": 15.51,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 1.97,
+     "flow_cm_s": 0.42,
+     "o2_pct": 15.3,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 2.12,
+     "flow_cm_s": 0.45,
+     "o2_pct": 18.01,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 2.18,
+     "flow_cm_s": 0.46,
+     "o2_pct": 15.31,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 2.18,
+     "flow_cm_s": 0.46,
+     "o2_pct": 15.21,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 2.18,
+     "flow_cm_s": 0.46,
+     "o2_pct": 14.81,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 3.54,
+     "flow_cm_s": 0.75,
+     "o2_pct": 15.3,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 3.69,
+     "flow_cm_s": 0.78,
+     "o2_pct": 14.61,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 3.89,
+     "flow_cm_s": 0.82,
+     "o2_pct": 15.31,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 3.89,
+     "flow_cm_s": 0.82,
+     "o2_pct": 14.81,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 3.89,
+     "flow_cm_s": 0.82,
+     "o2_pct": 14.61,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 3.92,
+     "flow_cm_s": 0.83,
+     "o2_pct": 13.61,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 4.41,
+     "flow_cm_s": 0.94,
+     "o2_pct": 13.61,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 4.67,
+     "flow_cm_s": 0.99,
+     "o2_pct": 14.21,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 5.2,
+     "flow_cm_s": 1.1,
+     "o2_pct": 16.11,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 6.17,
+     "flow_cm_s": 1.31,
+     "o2_pct": 14.31,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 6.38,
+     "flow_cm_s": 1.35,
+     "o2_pct": 14.61,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 6.38,
+     "flow_cm_s": 1.35,
+     "o2_pct": 14.61,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 7.73,
+     "flow_cm_s": 1.64,
+     "o2_pct": 13.51,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 10.94,
+     "flow_cm_s": 2.32,
+     "o2_pct": 14.51,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 11.73,
+     "flow_cm_s": 2.49,
+     "o2_pct": 14.52,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 12.42,
+     "flow_cm_s": 2.63,
+     "o2_pct": 14.42,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 15.55,
+     "flow_cm_s": 3.3,
+     "o2_pct": 13.51,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 18.39,
+     "flow_cm_s": 3.9,
+     "o2_pct": 14.1,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 25.51,
+     "flow_cm_s": 5.41,
+     "o2_pct": 14.21,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 25.51,
+     "flow_cm_s": 5.41,
+     "o2_pct": 14.2,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 27.02,
+     "flow_cm_s": 5.73,
+     "o2_pct": 14.2,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 33.97,
+     "flow_cm_s": 7.2,
+     "o2_pct": 14.51,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 34.67,
+     "flow_cm_s": 7.35,
+     "o2_pct": 14.51,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 37.63,
+     "flow_cm_s": 7.98,
+     "o2_pct": 14.51,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 37.63,
+     "flow_cm_s": 7.98,
+     "o2_pct": 14.51,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 39.04,
+     "flow_cm_s": 8.28,
+     "o2_pct": 13.51,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 51.13,
+     "flow_cm_s": 10.84,
+     "o2_pct": 14.31,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 52.83,
+     "flow_cm_s": 11.2,
+     "o2_pct": 14.3,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 60.96,
+     "flow_cm_s": 12.92,
+     "o2_pct": 14.81,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 66.43,
+     "flow_cm_s": 14.08,
+     "o2_pct": 14.81,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 67.25,
+     "flow_cm_s": 14.26,
+     "o2_pct": 16.11,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 67.53,
+     "flow_cm_s": 14.32,
+     "o2_pct": 16.11,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 71.8,
+     "flow_cm_s": 15.22,
+     "o2_pct": 14.81,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 74.8,
+     "flow_cm_s": 15.86,
+     "o2_pct": 14.76,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 81.17,
+     "flow_cm_s": 17.21,
+     "o2_pct": 15.22,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 88.45,
+     "flow_cm_s": 18.75,
+     "o2_pct": 15.22,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 111.68,
+     "flow_cm_s": 23.68,
+     "o2_pct": 15.51,
+     "outcome": "burn"
+    },
+    {
+     "stretch_s-1": 127.81,
+     "flow_cm_s": 27.1,
+     "o2_pct": 15.52,
+     "outcome": "extinct"
+    },
+    {
+     "stretch_s-1": 149.3,
+     "flow_cm_s": 31.65,
+     "o2_pct": 16.11,
+     "outcome": "extinct"
+    }
+   ]
+  },
+  {
+   "id": "pmma_ug_bassII_boundary_fit",
+   "material": "cast PMMA rod",
+   "gravity_g": 0,
+   "pressure_kPa": 101,
+   "flow_config": "concurrent / axial stagnation",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 Eq. (6.1) and Fig. 6.22",
+   "how_extracted": "NOT data: authors' published empirical boundary X_O2 = 6 exp(-0.5a) + 0.0167a + 13.4, evaluated at chosen U with a=(3/2)U/r_o, r_o=0.318 cm. Boundary is a stochastic band ~+-0.3 vol% wide (gray band in figures). Use for smooth curves only.",
+   "points": [
+    {
+     "flow_cm_s": 0.25,
+     "stretch_s-1": 1.18,
+     "o2_pct": 16.75,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 0.5,
+     "stretch_s-1": 2.36,
+     "o2_pct": 15.28,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 0.75,
+     "stretch_s-1": 3.54,
+     "o2_pct": 14.48,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 1,
+     "stretch_s-1": 4.72,
+     "o2_pct": 14.05,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 1.5,
+     "stretch_s-1": 7.08,
+     "o2_pct": 13.69,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 2,
+     "stretch_s-1": 9.43,
+     "o2_pct": 13.61,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 2.5,
+     "stretch_s-1": 11.79,
+     "o2_pct": 13.61,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 3,
+     "stretch_s-1": 14.15,
+     "o2_pct": 13.64,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 4,
+     "stretch_s-1": 18.87,
+     "o2_pct": 13.72,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 5,
+     "stretch_s-1": 23.58,
+     "o2_pct": 13.79,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 7.5,
+     "stretch_s-1": 35.38,
+     "o2_pct": 13.99,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 10,
+     "stretch_s-1": 47.17,
+     "o2_pct": 14.19,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 15,
+     "stretch_s-1": 70.75,
+     "o2_pct": 14.58,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 20,
+     "stretch_s-1": 94.34,
+     "o2_pct": 14.98,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 30,
+     "stretch_s-1": 141.51,
+     "o2_pct": 15.76,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 40,
+     "stretch_s-1": 188.68,
+     "o2_pct": 16.55,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 55,
+     "stretch_s-1": 259.43,
+     "o2_pct": 17.73,
+     "outcome": "limit"
+    }
+   ]
+  },
+  {
+   "id": "pmma_1g_blowoff_r0318",
+   "material": "cast PMMA rod r=0.318 cm",
+   "gravity_g": 1,
+   "pressure_kPa": 101,
+   "flow_config": "upward forced flow onto rod tip (mixed convection, axial stagnation) in 7.6 cm quartz tube",
+   "source": "Marcum J.W., Olson S.L., Ferkul P.V., \"Mixed Convection Blowoff Limits as a Function of Oxygen Concentration and Upward Forced Stretch Rate for Burning PMMA Rods of Various Sizes\", ICES-2017, https://ntrs.nasa.gov/citations/20170006615 (also 2016 Central States CI mtg, https://ntrs.nasa.gov/citations/20160012691)",
+   "how_extracted": "O2 exact (premixed test gases 15/16/17/18%); flow digitized from Fig. 5 (cluster centre; flow_range gives spread of repeat tests). Flame stable below this forced flow, blows off above it. 14% data discarded by authors (air entrainment artifact). Forced flow only; buoyant flow (~17-20 cm/s equivalent per authors) is additional.",
+   "points": [
+    {
+     "flow_cm_s": 6.5,
+     "flow_range_cm_s": [
+      5.9,
+      7.0
+     ],
+     "o2_pct": 15,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 19.0,
+     "flow_range_cm_s": [
+      18.7,
+      19.3
+     ],
+     "o2_pct": 16,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 30.5,
+     "flow_range_cm_s": [
+      29.3,
+      31.8
+     ],
+     "o2_pct": 17,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 43.0,
+     "flow_range_cm_s": [
+      42.0,
+      44.0
+     ],
+     "o2_pct": 18,
+     "outcome": "limit"
+    }
+   ]
+  },
+  {
+   "id": "pmma_1g_blowoff_r0635",
+   "material": "cast PMMA rod r=0.635 cm",
+   "gravity_g": 1,
+   "pressure_kPa": 101,
+   "flow_config": "upward forced flow onto rod tip, quartz tube",
+   "source": "same as pmma_1g_blowoff_r0318",
+   "how_extracted": "same as pmma_1g_blowoff_r0318 (Fig. 5 diamonds); 15% point overlaps other radii, +-1 cm/s",
+   "points": [
+    {
+     "flow_cm_s": 3.2,
+     "flow_range_cm_s": [
+      2.8,
+      3.7
+     ],
+     "o2_pct": 15,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 23.5,
+     "flow_range_cm_s": [
+      23.0,
+      23.9
+     ],
+     "o2_pct": 16,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 39.0,
+     "flow_range_cm_s": [
+      38.0,
+      40.0
+     ],
+     "o2_pct": 17,
+     "outcome": "limit"
+    },
+    {
+     "flow_cm_s": 56.5,
+     "flow_range_cm_s": [
+      55.6,
+      57.0
+     ],
+     "o2_pct": 18,
+     "outcome": "limit"
+    }
+   ]
+  },
+  {
+   "id": "sibal_ug_2p2cm",
+   "material": "SIBAL cotton/fiberglass fabric (75/25), 2.2 cm wide, thin",
+   "gravity_g": 0,
+   "pressure_kPa": 101,
+   "flow_config": "concurrent (purely forced)",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021). https://ntrs.nasa.gov/citations/20210011385 Sec. 7.1, Table 7.1 (Zhao, Liao, Johnston, T'ien, Ferkul, Olson; = Proc. Combust. Inst. 36 (2017) 2971-2978). Plotted in Zhao et al. 9th US Natl Combust. Mtg 2015 Fig. 7, https://ntrs.nasa.gov/citations/20150008962",
+   "how_extracted": "table (exact). For ramped tests the reported point is the END flow of the ramp (quench flow for 'Quenched' tests; lowest/highest flow survived otherwise). Two points flagged in notes are from the figure. Paper: quench flows 1-5 cm/s; bottom (flat) part of boundary not resolved; ignition sporadic near limit, so 'no_ignition' is NOT an extinction.",
+   "points": [
+    {
+     "flow_cm_s": 2.2,
+     "o2_pct": 18.7,
+     "outcome": "extinct",
+     "test": "GMT45-T4",
+     "note": "flow ramped 10->2.2, quenched"
+    },
+    {
+     "flow_cm_s": 29,
+     "o2_pct": 18.7,
+     "outcome": "burn",
+     "test": "GMT45-T15",
+     "note": "flow ramped 10->29, no blowoff"
+    },
+    {
+     "flow_cm_s": 2.4,
+     "o2_pct": 18.8,
+     "outcome": "burn",
+     "test": "GMT100-T5",
+     "note": "flow ramped 10->2.4, no extinction noted"
+    },
+    {
+     "flow_cm_s": 2.6,
+     "o2_pct": 18.8,
+     "outcome": "burn",
+     "test": "GMT100-T6",
+     "note": "flow ramped 4.5->2.6, no extinction noted"
+    },
+    {
+     "flow_cm_s": 2.2,
+     "o2_pct": 17.5,
+     "outcome": "extinct",
+     "test": "GMT100-T13",
+     "note": "flow ramped 4->2.2, quenched"
+    },
+    {
+     "flow_cm_s": 3,
+     "o2_pct": 17.6,
+     "outcome": "burn",
+     "test": "GMT100-T16",
+     "note": "flow ramped 4->3"
+    },
+    {
+     "flow_cm_s": 10,
+     "o2_pct": 16.4,
+     "outcome": "no_ignition",
+     "test": "GMT175-T9"
+    },
+    {
+     "flow_cm_s": 5,
+     "o2_pct": 16.4,
+     "outcome": "no_ignition",
+     "test": "GMT175-T10"
+    },
+    {
+     "flow_cm_s": 2.6,
+     "o2_pct": 17.4,
+     "outcome": "extinct",
+     "test": "GMT175-T18",
+     "note": "flow ramped 5->2.6, quenched"
+    },
+    {
+     "flow_cm_s": 5,
+     "o2_pct": 17.4,
+     "outcome": "burn",
+     "test": "GMT175-T18",
+     "note": "start flow of quenched test (stable flame plotted at 5 cm/s, Zhao 2015 Fig 7)"
+    },
+    {
+     "flow_cm_s": 4,
+     "o2_pct": 17.1,
+     "outcome": "burn",
+     "test": "GMT178-T11"
+    },
+    {
+     "flow_cm_s": 5,
+     "o2_pct": 16.8,
+     "outcome": "no_ignition",
+     "test": "GMT178-T12",
+     "note": "table says 5 cm/s; Zhao 2015 Fig 7 plots it at ~3.7 cm/s"
+    },
+    {
+     "flow_cm_s": 2.8,
+     "o2_pct": 16.9,
+     "outcome": "extinct",
+     "test": "GMT178-T14",
+     "note": "flow ramped 4->2.8, quenched"
+    },
+    {
+     "flow_cm_s": 3.7,
+     "o2_pct": 16.9,
+     "outcome": "burn",
+     "test": "GMT178-T14?",
+     "note": "digitized from Zhao 2015 Fig 7 (stable 2.2 cm point at ~3.7 cm/s, +-0.2); not in table"
+    },
+    {
+     "flow_cm_s": 53,
+     "o2_pct": 16.9,
+     "outcome": "burn",
+     "test": "GMT178-T17",
+     "note": "flow ramped 6->53, no blowoff"
+    },
+    {
+     "flow_cm_s": 5,
+     "o2_pct": 21,
+     "outcome": "burn",
+     "test": "GMT96-T8",
+     "note": "BASS (2011)"
+    },
+    {
+     "flow_cm_s": 10,
+     "o2_pct": 21,
+     "outcome": "burn",
+     "test": "GMT96-T7",
+     "note": "BASS (2011)"
+    }
+   ]
+  },
+  {
+   "id": "sibal_ug_1p2cm",
+   "material": "SIBAL fabric, 1.2 cm wide",
+   "gravity_g": 0,
+   "pressure_kPa": 101,
+   "flow_config": "concurrent (purely forced)",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021). https://ntrs.nasa.gov/citations/20210011385 Table 7.1",
+   "how_extracted": "table (exact); end-of-ramp flows. Narrower sample has smaller flammable domain (authors).",
+   "points": [
+    {
+     "flow_cm_s": 11,
+     "o2_pct": 17.2,
+     "outcome": "burn",
+     "test": "GMT190-T19"
+    },
+    {
+     "flow_cm_s": 3,
+     "o2_pct": 17.2,
+     "outcome": "extinct",
+     "test": "GMT190-T20",
+     "note": "flow ramped 11->3, quenched"
+    },
+    {
+     "flow_cm_s": 47,
+     "o2_pct": 17.2,
+     "outcome": "extinct",
+     "test": "GMT190-T21",
+     "note": "flow ramped 11->47, blow-off (Fig 7 plots blowoff at ~31 cm/s)"
+    },
+    {
+     "flow_cm_s": 5,
+     "o2_pct": 17.1,
+     "outcome": "extinct",
+     "test": "GMT190-T22",
+     "note": "flow ramped 10.5->5, quenched"
+    },
+    {
+     "flow_cm_s": 2,
+     "o2_pct": 20.7,
+     "outcome": "burn",
+     "test": "GMT216-T27",
+     "note": "reused sample, ramp 5->2"
+    },
+    {
+     "flow_cm_s": 2,
+     "o2_pct": 20.7,
+     "outcome": "burn",
+     "test": "GMT216-T29",
+     "note": "reused sample, ramp 5->2"
+    },
+    {
+     "flow_cm_s": 11,
+     "o2_pct": 21,
+     "outcome": "burn",
+     "test": "GMT131-T10",
+     "note": "BASS"
+    },
+    {
+     "flow_cm_s": 19,
+     "o2_pct": 21,
+     "outcome": "burn",
+     "test": "GMT222-T11",
+     "note": "BASS"
+    }
+   ]
+  }
+ ],
+ "one_g_limits": [
+  {
+   "material": "cast PMMA rod",
+   "o2_pct": 15.4,
+   "test": "upward flame spread limit, normal gravity, with additional 4 cm/s forced flow (Hirsch et al.)",
+   "pressure_kPa": 101,
+   "source": "Hirsch D. et al., ASTM STP1454 (2003) pp.21-26, as quoted in Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 Sec 6.1.4.4 (text); authors place it at ~24 cm/s effective (20 cm/s buoyant + 4 forced)."
+  },
+  {
+   "material": "PMMA rod, 1.27 cm dia",
+   "o2_pct": 15.0,
+   "test": "upward burning limit, minimum over flow (min at 12 cm/s O2/N2 flow)",
+   "pressure_kPa": 101,
+   "source": "Halli Y., T'ien J.S., NBS-GCR-86-507 (1986), abstract, https://firedoc.nist.gov/article/8XcxXYQBWEcjUZEYug2D (pressure assumed 1 atm, not stated in abstract)"
+  },
+  {
+   "material": "PMMA rod, 1.27 cm dia",
+   "o2_pct": 18.4,
+   "test": "downward burning limit, ~independent of flow 5-40 cm/s",
+   "pressure_kPa": 101,
+   "source": "Halli & T'ien 1986 (same as above)"
+  },
+  {
+   "material": "PMMA rod (r 0.318-1.905 cm)",
+   "o2_pct": 13.4,
+   "test": "1g blowoff boundary linearly extrapolated to zero stretch (proposed method, not a measured limit)",
+   "pressure_kPa": 101,
+   "source": "Marcum, Olson, Ferkul 2016/2017 (NTRS 20160012691, 20170006615), text"
+  }
+ ],
+ "microgravity_key_numbers": [
+  {
+   "material": "PMMA rod",
+   "o2_pct": 13.5,
+   "what": "minimum of uG flammability boundary (Eq. 6.1) at a=8-12 s^-1 (~1.7-2.5 cm/s for r=0.318 cm; blowoff->quench transition at U~U_D=2 cm/s)",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 text"
+  },
+  {
+   "material": "PMMA rod",
+   "o2_pct": 13.6,
+   "what": "lowest O2 with stable flame observed on ISS (final reading)",
+   "source": "Olson & Ferkul 2015 (NTRS 20150008961) and Marcum 2016, text"
+  },
+  {
+   "material": "PMMA rod",
+   "o2_pct": 13.3,
+   "what": "y-intercept of linear blowoff fit (2015 version); 13.4 in 2017 Eq. 6.1",
+   "source": "Olson & Ferkul 2015 text"
+  },
+  {
+   "material": "PMMA rod",
+   "o2_pct": 14.5,
+   "what": "approx. initial O2 below which sustained ignition could not be achieved on ISS (ignition limit, not burning limit)",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 text"
+  },
+  {
+   "material": "PMMA rod (opposed flow, BASS-II)",
+   "o2_pct": 16.4,
+   "what": "opposed-flow spread not observed below this O2 at any flow",
+   "source": "Olson S.L., Ferkul P.V. et al., \"Burning and Suppression of Solids-II (BASS-II) Summary Report\", NASA/TM-20210011385 (2021), Sec. 6.1 = reprint of Olson & Ferkul, Combust. Flame 180 (2017) 217-229, doi:10.1016/j.combustflame.2017.03.001. https://ntrs.nasa.gov/citations/20210011385 text"
+  },
+  {
+   "material": "SIBAL 2.2 cm",
+   "o2_pct": 16.9,
+   "what": "lowest O2 with sustained concurrent spread (at ~3.7-4 cm/s and at 53 cm/s); no ignition at 16.8 and 16.4",
+   "source": "Table 7.1"
+  }
+ ],
+ "partial_gravity": [
+  {
+   "id": "pmma_rod_centrifuge_partial_g",
+   "material": "cast PMMA rod, 1/4 in (6.35 mm) dia, upward burning",
+   "pressure_kPa": 101,
+   "flow_config": "upward (buoyant) in centrifuge-in-drop-tower; ignited in 1g with ~30 cm/s ignition O2 flow via retractable nozzle; forced flow during the reduced-g period not stated in the slide",
+   "source": "Olson S.L., Neumann E.S., Valletta V.M., Ogorzaly A.L., Owens J.C., \"Partial gravity flammability of cast PMMA rods in concurrent axial stagnation flow\", Fire Safety Journal 150 (2024) 104267 - figure as reproduced on slide 19 of Ferkul et al., LPSC 2026, https://ntrs.nasa.gov/citations/20260001966 (FSJ paper itself not read)",
+   "how_extracted": "digitized from slide image (raster, 4x). O2 +-0.05 vol%, g values are discrete settings read as 0.04/0.16/0.38/0.65/1.0 (+-0.01). ~5 s drop: gas phase may respond, solid not (authors' caveat). Steady flames and extinctions overlap at same g (stochastic band); authors' shaded boundary minimum ~13.7-13.8% near 0.16-0.2 g.",
+   "points": [
+    {
+     "gravity_g": 0.04,
+     "o2_pct": 14.5,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.16,
+     "o2_pct": 14.41,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.16,
+     "o2_pct": 13.85,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.38,
+     "o2_pct": 14.43,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.38,
+     "o2_pct": 13.87,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.65,
+     "o2_pct": 14.7,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 1.0,
+     "o2_pct": 15.1,
+     "outcome": "burn"
+    },
+    {
+     "gravity_g": 0.04,
+     "o2_pct": 14.1,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.04,
+     "o2_pct": 13.6,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.16,
+     "o2_pct": 13.66,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.16,
+     "o2_pct": 13.13,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.38,
+     "o2_pct": 14.0,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.38,
+     "o2_pct": 13.38,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 0.65,
+     "o2_pct": 14.31,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 1.0,
+     "o2_pct": 14.8,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 1.0,
+     "o2_pct": 14.39,
+     "outcome": "extinct"
+    },
+    {
+     "gravity_g": 1.0,
+     "o2_pct": 15.4,
+     "outcome": "limit",
+     "note": "Hirsch 1g 1 atm (plotted +)"
+    },
+    {
+     "gravity_g": 1.0,
+     "o2_pct": 14.5,
+     "outcome": "limit",
+     "note": "second Hirsch 1g 1 atm marker (digitized); meaning not explained on slide"
+    }
+   ]
+  },
+  {
+   "id": "sibal_lunar_g_downward_spread",
+   "material": "SIBAL fabric 5 cm wide",
+   "pressure_kPa": 101,
+   "flow_config": "downward (opposed buoyant) at 0.165 g, air 21% O2",
+   "source": "Ferkul et al. LPSC 2026 slides 20-21 (NTRS 20260001966)",
+   "how_extracted": "text on slide",
+   "points": [
+    {
+     "gravity_g": 0.165,
+     "o2_pct": 21,
+     "outcome": "burn",
+     "note": "steady downward spread entire 20 s, parabolic flight; flame base spread 0.086 cm/s (aircraft), 0.11 cm/s (centrifuge drop)"
+    }
+   ]
+  }
+ ],
+ "notes": "1) PMMA uG data are vs normalized STRETCH RATE; flow_cm_s is the equivalent for the 0.318 cm rod (U=a*r_o/1.5). Per-test U is in TM Table A.5 but only as fan-pot/air-display ramps, not clean extinction flows, so it was not used. 2) O2 for BASS-II is final chamber O2 (O2 drops 0.5-1.3% during a burn). 3) No NASA-STD-6001 Test 1 MOC was found for PMMA or SIBAL; the 6001 MOC table in LPSC 2026 (Tapia Harper et al. ICES 2017) covers Solimide, Ultem, Nomex, NX2245 at 10.2 psia only (MOC 22-25%). Hirsch 15.4% is the closest 1g upward PMMA limit. 4) PMMA LOI (ASTM D2863) ~17 vol% appears only in vendor tables found (Zeus: 17); 17.3-17.7 not verified from a primary source this session, so it is omitted from one_g_limits. 5) No 1g limit for SIBAL was found. 6) ICES 2019 Olson 'Flammability Limits from BASS-II Testing in Microgravity Compared to Normal Gravity Limits' (ttu-ir.tdl.org) blocked (403); FSJ 2024 partial-g paper and Olson 1991 CST Kimwipe map not read. 7) uG minimum (13.5%) vs 1g upward (15.0-15.4%): PMMA burns ~1.5-2 vol% O2 lower in low-speed uG flow; partial-g centrifuge minimum ~13.7-13.8% near lunar g. 8) Pressure for all ISS/1g lab tests ~1 atm (ISS cabin ~101 kPa); exact values not tabulated."
+}

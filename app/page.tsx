@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Flame from "./Flame";
 import Planet, { type Body } from "./Planet";
+import Predict from "./Predict";
 import { INVESTIGATIONS, SCENARIOS, FUEL_LABEL, type Investigation, type FuelType, type Scenario } from "@/lib/data.ts";
 import { rank, coverage, physicsNotes, type Condition, type Focus } from "@/lib/rank.ts";
 import { psiFor, clip, PSI_COUNT } from "@/lib/psi.ts";
@@ -30,7 +31,7 @@ const TEAM = [
   ["María Lucía Báez", "lubaez"],
   ["Guadalupe Nogueira", "guadanogueira_"],
 ] as const;
-const STEPS = [["paso-1", "Hábitat"], ["paso-2", "Fuego"], ["paso-3", "Datos"], ["paso-4", "Experimentos"], ["paso-5", "Preguntar"]] as const;
+const STEPS = [["paso-1", "Hábitat"], ["paso-2", "Fuego"], ["prediccion", "Predicción"], ["paso-3", "Datos"], ["paso-4", "Experimentos"], ["paso-5", "Preguntar"]] as const;
 const gLabel = (g: number) => (g < 0.02 ? "sin gravedad" : Math.abs(g - 0.16) < 0.02 ? "gravedad lunar (1/6 de la Tierra)" : Math.abs(g - 0.38) < 0.02 ? "gravedad de Marte (1/3 de la Tierra)" : g >= 0.98 ? "gravedad terrestre" : `${g} g`);
 
 function plainFire(c: Condition) {
@@ -198,7 +199,7 @@ export default function Home() {
         <div className="herocopy">
           <p className="kicker">NASA Space Apps 2026 · Flame in Freefall</p>
           <h1>¿Sabemos cómo quema el fuego <em>donde vamos a vivir?</em></h1>
-          <p className="lede">La NASA quiere volver a la Luna y llegar a Marte. Allá el aire va a tener más oxígeno que acá, y con más oxígeno todo prende más fácil. Te mostramos en 5 pasos qué se sabe y qué falta medir.</p>
+          <p className="lede">La NASA quiere volver a la Luna y llegar a Marte. Allá el aire va a tener más oxígeno que acá, y con más oxígeno todo prende más fácil. Te mostramos en 6 pasos qué se sabe, qué predice nuestro modelo y qué falta medir.</p>
           <button className="cta" onClick={() => go("paso-1")}>Empezar</button>
         </div>
         <div className="heroviz">
@@ -251,11 +252,17 @@ export default function Home() {
               </details>
             </div>
           </div>
-          <button className="next" onClick={() => go("paso-3")}>Siguiente: ¿hay datos para esto? ↓</button>
+          <button className="next" onClick={() => go("prediccion")}>Siguiente: ¿se prendería algo acá? ↓</button>
+        </section>
+
+        <section id="prediccion" className="step" data-reveal>
+          <StepHead n={3} title="¿Se prendería algo acá?" hint="Nuestro modelo predice si un material de cabina sigue quemando. Está entrenado con datos de la ISS y validado con ensayos que nunca vio." />
+          <Predict cond={cond} place={custom ? "tu atmósfera" : scenario!.name} />
+          <button className="next" onClick={() => go("paso-3")}>Siguiente: ¿hay datos de NASA para esto? ↓</button>
         </section>
 
         <section id="paso-3" className="step" data-reveal>
-          <StepHead n={3} title="¿Tenemos datos de NASA para esto?" hint="Buscamos experimentos del repositorio PSI hechos en condiciones parecidas." />
+          <StepHead n={4} title="¿Tenemos datos de NASA para esto?" hint="Buscamos experimentos del repositorio PSI hechos en condiciones parecidas." />
           <div className="verdictbox">
             <p className="verdict" aria-live="polite">
               {gaps === 0 ? <><b>Sí</b>hay experimentos cerca para los cuatro tipos de fuego.</> : <><b>{gaps} de 4</b>tipos de fuego no tienen experimentos cerca de esta atmósfera.</>}
@@ -292,7 +299,7 @@ export default function Home() {
         </section>
 
         <section id="paso-4" className="step" data-reveal>
-          <StepHead n={4} title="¿Qué experimentos sirven más?" hint="Los ordenamos por qué tan parecidas fueron sus condiciones a las tuyas." />
+          <StepHead n={5} title="¿Qué experimentos sirven más?" hint="Los ordenamos por qué tan parecidas fueron sus condiciones a las tuyas." />
           <div className="top3">
             {ranked.slice(0, 3).map((r, i) => (
               <button key={r.inv.id} className="topcard" style={{ "--i": i } as React.CSSProperties} onClick={() => { setShowAll(true); setOpen(r.inv.id); setTimeout(() => go("ranking"), 50); }}>
@@ -352,7 +359,7 @@ export default function Home() {
         </section>
 
         <section id="paso-5" className="step" data-reveal>
-          <StepHead n={5} title="¿Te quedó una duda? Preguntá" hint="El copiloto contesta con los experimentos más cercanos a tu atmósfera y te dice cuál usó." />
+          <StepHead n={6} title="¿Te quedó una duda? Preguntá" hint="El copiloto contesta con los experimentos más cercanos a tu atmósfera y te dice cuál usó." />
           <div className="panel copilot">
             <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) ask(q); }} className="ask">
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ej.: ¿qué pasa si se corta la ventilación?" aria-label="Pregunta" />

@@ -4,6 +4,7 @@ import { INVESTIGATIONS } from "@/lib/data.ts";
 import { rank, physicsNotes, type Condition, type Focus } from "@/lib/rank.ts";
 import type { FuelType } from "@/lib/data.ts";
 import { psiFor, clip } from "@/lib/psi.ts";
+import { predict } from "@/lib/predict.ts";
 
 const SYSTEM = `Sos estudiante de doctorado en combustión en una universidad argentina y trabajás con los datos de microgravedad de NASA (PSI). Te consulta un colega ingeniero que está diseñando un hábitat. Le contestás como en un pasillo del laboratorio: directo, concreto, en español rioplatense con voseo, sin formalidades.
 
@@ -107,7 +108,9 @@ export async function POST(req: Request) {
       return f ? { ficha_psi: { id: f.psiId, doi: f.doi, objetivo_nasa: clip(f.objective, 500), hipotesis_nasa: clip(f.hypothesis, 400), enfoque_nasa: clip(f.approach, 500) } } : {};
     })(),
   }));
-  const prompt = `Condición del hábitat: ${JSON.stringify(condition)}\nNotas físicas: ${physicsNotes(condition).join(" ")}\nContexto PSI:\n${JSON.stringify(context, null, 1)}\n\nPregunta: ${question}`;
+  const pr = predict(condition.o2, condition.flow, condition.gravity);
+  const model = `Predicción del modelo propio (física calibrada con BASS-II y validada con ensayos en centrífuga): para PMMA, O₂ mínimo para que siga quemando ${pr.limit[0].toFixed(1)} % (IC ${pr.limit[1].toFixed(1)}-${pr.limit[2].toFixed(1)}), probabilidad de que la llama se sostenga ${Math.round(pr.pBurn[0] * 100)} %, y si se corta la ventilación ${Math.round(pr.pBurnVentCut[0] * 100)} %. Si la usás, citala como [MODELO].`;
+  const prompt = `Condición del hábitat: ${JSON.stringify(condition)}\n${model}\nNotas físicas: ${physicsNotes(condition).join(" ")}\nContexto PSI:\n${JSON.stringify(context, null, 1)}\n\nPregunta: ${question}`;
   const cited = hits.map((h) => h.inv.id);
   try {
     if (process.env.OPENAI_MODEL) { const [answer, model] = await askOpenAICompatible(prompt); return Response.json({ answer, engine: model, cited }); }
