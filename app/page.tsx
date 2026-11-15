@@ -14,13 +14,13 @@ const X = (o2: number) => M.l + ((Math.log(o2) - Math.log(O2[0])) / (Math.log(O2
 const Y = (p: number) => M.t + (1 - (Math.log(p) - Math.log(P[0])) / (Math.log(P[1]) - Math.log(P[0]))) * (H - M.t - M.b);
 const FUELS: FuelType[] = ["solid", "liquid", "gas", "aerosol"];
 const FUEL_VAR: Record<FuelType, string> = { gas: "var(--s-gas)", liquid: "var(--s-liquid)", solid: "var(--s-solid)", aerosol: "var(--muted)" };
-const FOCI: [Focus, string][] = [["all", "Todo"], ["prevention", "Prevención"], ["detection", "Detección"], ["suppression", "Supresión"]];
-const STATUS = { cubierto: { icon: "✓", cls: "good", say: "Hay datos" }, parcial: { icon: "◐", cls: "warn", say: "Pocos datos" }, brecha: { icon: "✕", cls: "crit", say: "Sin datos" } } as const;
+const FOCI: [Focus, string][] = [["all", "All"], ["prevention", "Prevention"], ["detection", "Detection"], ["suppression", "Suppression"]];
+const STATUS = { cubierto: { icon: "✓", cls: "good", say: "Data available" }, parcial: { icon: "◐", cls: "warn", say: "Little data" }, brecha: { icon: "✕", cls: "crit", say: "No data" } } as const;
 const PLAIN: Record<FuelType, [string, string]> = {
-  solid: ["Materiales", "telas, plásticos, cables"],
-  liquid: ["Líquidos", "combustibles y aceites"],
-  gas: ["Gases", "fugas de gas"],
-  aerosol: ["Humo", "lo que miden los detectores"],
+  solid: ["Materials", "fabrics, plastics, cables"],
+  liquid: ["Liquids", "fuels and oils"],
+  gas: ["Gases", "gas leaks"],
+  aerosol: ["Smoke", "what detectors measure"],
 };
 const BODY: Record<string, Body> = { iss: "earth", rover: "moon", moonbase: "moon", mars: "mars", suit: "moon", apollo1: "earth", apollo13: "moon", mir: "earth", artemis2: "moon" };
 const TEAM = [
@@ -31,33 +31,33 @@ const TEAM = [
   ["María Lucía Báez", "lubaez"],
   ["Guadalupe Nogueira", "guadanogueira_"],
 ] as const;
-const STEPS = [["paso-1", "Hábitat"], ["paso-2", "Fuego"], ["prediccion", "Predicción"], ["paso-3", "Datos"], ["paso-4", "Experimentos"], ["paso-5", "Preguntar"]] as const;
-const gLabel = (g: number) => (g < 0.02 ? "sin gravedad" : Math.abs(g - 0.16) < 0.02 ? "gravedad lunar (1/6 de la Tierra)" : Math.abs(g - 0.38) < 0.02 ? "gravedad de Marte (1/3 de la Tierra)" : g >= 0.98 ? "gravedad terrestre" : `${g} g`);
+const STEPS = [["paso-1", "Habitat"], ["paso-2", "Fire"], ["prediccion", "Prediction"], ["paso-3", "Data"], ["paso-4", "Experiments"], ["paso-5", "Ask"]] as const;
+const gLabel = (g: number) => (g < 0.02 ? "no gravity" : Math.abs(g - 0.16) < 0.02 ? "Moon gravity (1/6 of Earth)" : Math.abs(g - 0.38) < 0.02 ? "Mars gravity (1/3 of Earth)" : g >= 0.98 ? "Earth gravity" : `${g} g`);
 
 function plainFire(c: Condition) {
   const d = Math.round(((c.o2 - 21) / 21) * 100);
   return [
     c.gravity < 0.02
-      ? "Sin gravedad el aire caliente no sube. La llama queda como una esfera azul y el oxígeno le llega despacio, por difusión."
+      ? "Without gravity, hot air does not rise. The flame becomes a blue sphere and oxygen reaches it slowly, by diffusion."
       : c.gravity < 0.98
-        ? `Con ${gLabel(c.gravity)} el aire caliente sube muy despacio. La llama se estira un poco, pero no como una vela en la Tierra.`
-        : "Con la gravedad de la Tierra el aire caliente sube y la llama toma forma de lágrima.",
+        ? `With ${gLabel(c.gravity)}, hot air rises very slowly. The flame stretches a little, but not like a candle on Earth.`
+        : "With Earth gravity, hot air rises and the flame takes a teardrop shape.",
     c.o2 > 23
-      ? `Hay ${c.o2} % de oxígeno, ${d} % más que en el aire. Las cosas prenden más fácil y la llama es más caliente.`
-      : c.o2 < 19 ? `Hay ${c.o2} % de oxígeno, menos que en el aire. Cuesta más que algo prenda.` : "El oxígeno es parecido al del aire que respiramos.",
+      ? `There is ${c.o2} % oxygen, ${d} % more than in normal air. Things catch fire more easily and the flame is hotter.`
+      : c.o2 < 19 ? `There is ${c.o2} % oxygen, less than in normal air. It is harder for things to catch fire.` : "The oxygen level is close to the air we breathe.",
     c.flow < 3
-      ? "Sin ventilación la llama se puede ahogar sola, pero si arranca un ventilador vuelve a prender."
+      ? "Without ventilation the flame can smother itself, but if a fan starts it can flare up again."
       : c.flow <= 30
-        ? `La ventilación (${c.flow} cm/s) le acerca oxígeno. Justo en este rango el fuego avanza mejor sobre los materiales.`
-        : "Con tanto flujo de aire la llama se puede soplar y apagar.",
+        ? `The ventilation (${c.flow} cm/s) brings oxygen to the flame. In this range fire spreads best over materials.`
+        : "With this much airflow the flame can be blown out.",
   ];
 }
 
 const QUESTIONS = [
-  "¿Qué materiales de cabina son más riesgosos en esta atmósfera?",
-  "¿Cómo conviene diseñar la detección de humo para este hábitat?",
-  "¿Sirve el CO₂ como supresor acá?",
-  "¿Qué experimento falta para cerrar la brecha?",
+  "Which cabin materials are the most risky in this atmosphere?",
+  "How should smoke detection be designed for this habitat?",
+  "Would CO₂ work as a fire suppressant here?",
+  "What experiment is missing to fill this data gap?",
 ];
 const pad = (n: number) => String(n).padStart(2, "0");
 const cssVar = (c: string) => ({ "--c": c }) as React.CSSProperties;
@@ -79,29 +79,29 @@ function Chart({ cond, selected, onPick, setTip, hidden }: { cond: Condition; se
     return { x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - h / 2, w, h };
   };
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label="Mapa de cobertura: O₂ contra presión. Cajas: rango ensayado por cada investigación. Rombos: hábitats. Círculos: incidentes.">
+    <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label="Coverage map of O₂ against pressure. Boxes show the range tested by each investigation, diamonds show habitats and circles show incidents.">
       {xt.map((t) => <g key={t}><line x1={X(t)} x2={X(t)} y1={M.t} y2={H - M.b} className="grid" /><text x={X(t)} y={H - M.b + 16} className="tick" textAnchor="middle">{t}</text></g>)}
       {yt.map((t) => <g key={t}><line x1={M.l} x2={W - M.r} y1={Y(t)} y2={Y(t)} className="grid" /><text x={M.l - 8} y={Y(t) + 4} className="tick" textAnchor="end">{t}</text></g>)}
       <line x1={M.l} x2={W - M.r} y1={H - M.b} y2={H - M.b} className="axis" />
       <text x={(W + M.l) / 2} y={H - 6} className="axlabel" textAnchor="middle">O₂ (%, log)</text>
-      <text transform={`translate(14 ${(H - M.b + M.t) / 2}) rotate(-90)`} className="axlabel" textAnchor="middle">Presión total (psi, log)</text>
+      <text transform={`translate(14 ${(H - M.b + M.t) / 2}) rotate(-90)`} className="axlabel" textAnchor="middle">Total pressure (psi, log)</text>
 
       <rect x={X(28)} y={Y(10.5)} width={X(36) - X(28)} height={Y(7.8) - Y(10.5)} className="target" />
-      <text x={X(28)} y={Y(7.8) + 14} className="targetlabel">ZONA ARTEMIS</text>
+      <text x={X(28)} y={Y(7.8) + 14} className="targetlabel">ARTEMIS ZONE</text>
 
       {INVESTIGATIONS.filter((inv) => !hidden.has(inv.fuelType)).map((inv) => {
         const b = box(inv);
         return (
           <rect key={inv.id} x={b.x} y={b.y} width={b.w} height={b.h} rx={3} className={`inv ${inv.fuelType}${inv.inPsi ? "" : " ext"}`} style={cssVar(FUEL_VAR[inv.fuelType])}
-            onMouseMove={(e) => setTip({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY, title: `${inv.id} · ${FUEL_LABEL[inv.fuelType]}`, body: `O₂ ${inv.o2.join("–")}% · ${inv.pressure.join("–")} psi · flujo ${inv.flow.join("–")} cm/s` })}
+            onMouseMove={(e) => setTip({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY, title: `${inv.id} · ${FUEL_LABEL[inv.fuelType]}`, body: `O₂ ${inv.o2.join("–")}% · ${inv.pressure.join("–")} psi · flow ${inv.flow.join("–")} cm/s` })}
             onMouseLeave={() => setTip(null)} />
         );
       })}
 
       {issOnly.length > 1 && (
-        <g className="stack" tabIndex={0} role="img" aria-label={`${issOnly.length} investigaciones ensayadas solo en aire ISS: ${issOnly.map((i) => i.id).join(", ")}`}
-          onMouseMove={(e) => setTip({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY, title: `${issOnly.length} investigaciones solo en aire ISS`, body: issOnly.map((i) => i.id).join(", ") })}
-          onMouseLeave={() => setTip(null)} onFocus={() => setTip({ x: X(21) - 150, y: Y(14.7) + 40, title: `${issOnly.length} investigaciones solo en aire ISS`, body: issOnly.map((i) => i.id).join(", ") })} onBlur={() => setTip(null)}>
+        <g className="stack" tabIndex={0} role="img" aria-label={`${issOnly.length} investigations tested only in ISS air: ${issOnly.map((i) => i.id).join(", ")}`}
+          onMouseMove={(e) => setTip({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY, title: `${issOnly.length} investigations only in ISS air`, body: issOnly.map((i) => i.id).join(", ") })}
+          onMouseLeave={() => setTip(null)} onFocus={() => setTip({ x: X(21) - 150, y: Y(14.7) + 40, title: `${issOnly.length} investigations only in ISS air`, body: issOnly.map((i) => i.id).join(", ") })} onBlur={() => setTip(null)}>
           <line x1={X(21)} y1={Y(14.7)} x2={X(21) - 26} y2={Y(14.7) + 34} className="leader" />
           <circle cx={X(21) - 34} cy={Y(14.7) + 42} r={13} className="badge" />
           <text x={X(21) - 34} y={Y(14.7) + 46} textAnchor="middle" className="badgetxt">×{issOnly.length}</text>
@@ -162,7 +162,7 @@ export default function Home() {
   const notes = physicsNotes(cond);
   const custom = !scenario || scenario.o2 !== cond.o2 || scenario.pressure !== cond.pressure || scenario.flow !== cond.flow || scenario.gravity !== cond.gravity;
   const body: Body = BODY[selected] ?? "moon";
-  const place = custom ? "tu atmósfera" : scenario!.name;
+  const place = custom ? "your atmosphere" : scenario!.name;
 
   const pick = (s: Scenario) => { setSelected(s.id); setCond({ o2: s.o2, pressure: s.pressure, flow: s.flow, gravity: s.gravity }); setAns(null); };
   const ask = async (question: string) => {
@@ -170,7 +170,7 @@ export default function Home() {
     try {
       const r = await fetch("/api/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question, condition: cond }) });
       setAns(await r.json());
-    } catch { setAns({ answer: "No se pudo contactar al servidor.", engine: "error", cited: [] }); }
+    } catch { setAns({ answer: "Could not reach the server.", engine: "error", cited: [] }); }
     setLoading(false);
   };
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -178,10 +178,10 @@ export default function Home() {
   const gaps = cov.filter((c) => c.status === "brecha").length;
   const solidsHighO2 = INVESTIGATIONS.filter((i) => i.fuelType === "solid" && i.inPsi && i.o2[1] > 21).length;
   const stats = [
-    { label: "investigaciones de NASA en el atlas", value: String(INVESTIGATIONS.length) },
-    { label: "con ficha oficial de PSI", value: String(PSI_COUNT) },
-    { label: "ensayos en PSI con materiales sólidos por encima de 21 % O₂", value: String(solidsHighO2) },
-    { label: "datos de combustión en gravedad lunar o marciana", value: "0" },
+    { label: "NASA investigations in the atlas", value: String(INVESTIGATIONS.length) },
+    { label: "with an official PSI record", value: String(PSI_COUNT) },
+    { label: "PSI tests with solid materials above 21 % O₂", value: String(solidsHighO2) },
+    { label: "combustion datasets in PSI at Moon or Mars gravity", value: "0" },
   ];
 
   return (
@@ -198,9 +198,9 @@ export default function Home() {
       <header className="hero">
         <div className="herocopy">
           <p className="kicker">NASA Space Apps 2026 · Flame in Freefall</p>
-          <h1>¿Sabemos cómo quema el fuego <em>donde vamos a vivir?</em></h1>
-          <p className="lede">La NASA quiere volver a la Luna y llegar a Marte. Allá el aire va a tener más oxígeno que acá, y con más oxígeno todo prende más fácil. Te mostramos en 6 pasos qué se sabe, qué predice nuestro modelo y qué falta medir.</p>
-          <button className="cta" onClick={() => go("paso-1")}>Empezar</button>
+          <h1>Do we know how fire burns <em>where we are going to live?</em></h1>
+          <p className="lede">NASA wants to go back to the Moon and then on to Mars. The air in those habitats will have more oxygen than here, and with more oxygen everything catches fire more easily. In 6 steps we show what is known, what our model predicts and what still needs to be measured.</p>
+          <button className="cta" onClick={() => go("paso-1")}>Start</button>
         </div>
         <div className="heroviz">
           <Planet body={body} />
@@ -210,7 +210,7 @@ export default function Home() {
 
       <main>
         <section id="paso-1" className="step" data-reveal>
-          <StepHead n={1} title="¿Dónde vas a vivir?" hint="Elegí un lugar. Todo lo que sigue se adapta a tu elección." />
+          <StepHead n={1} title="Where will you live?" hint="Pick a place. Everything below adapts to your choice." />
           <div className="habitats">
             {SCENARIOS.filter((s) => s.kind === "habitat").map((s, i) => {
               const on = selected === s.id && !custom;
@@ -219,18 +219,18 @@ export default function Home() {
                 <button key={s.id} className={`habitat-card ${on ? "on" : ""}`} style={{ "--i": i } as React.CSSProperties} onClick={() => pick(s)} aria-pressed={on}>
                   <Planet body={BODY[s.id]} still className="mini" />
                   <b>{s.name}</b>
-                  <span className="hstat"><em>{s.o2} %</em> oxígeno{d > 0 ? ` (+${d} % que el aire)` : ""}</span>
+                  <span className="hstat"><em>{s.o2} %</em> oxygen{d > 0 ? ` (+${d} % vs. normal air)` : ""}</span>
                   <span className="hstat"><em>{s.pressure}</em> psi · {gLabel(s.gravity)}</span>
-                  {on && <span className="picked">Elegido ✓</span>}
+                  {on && <span className="picked">Selected ✓</span>}
                 </button>
               );
             })}
           </div>
-          <button className="next" onClick={() => go("paso-2")}>Siguiente: cómo se comporta el fuego ahí ↓</button>
+          <button className="next" onClick={() => go("paso-2")}>Next: how fire behaves there ↓</button>
         </section>
 
         <section id="paso-2" className="step" data-reveal>
-          <StepHead n={2} title={`¿Cómo se comporta el fuego en ${custom ? "tu atmósfera" : scenario!.name}?`} hint="La animación es ilustrativa. Mové los controles y mirá cómo cambia." />
+          <StepHead n={2} title={`How does fire behave in ${custom ? "your atmosphere" : scenario!.name}?`} hint="The animation is for illustration. Move the sliders and watch how it changes." />
           <div className="fire">
             <div className="flamebox">
               <Flame o2={cond.o2} gravity={cond.gravity} flow={cond.flow} />
@@ -238,7 +238,7 @@ export default function Home() {
             <div className="firetext">
               <ol className="plain">{plainFire(cond).map((t, i) => <li key={i}>{t}</li>)}</ol>
               <div className="sliders">
-                {([["o2", "Oxígeno", 10, 100, 1, " %"], ["gravity", "Gravedad", 0, 1, 0.01, " g"], ["flow", "Ventilación", 0, 70, 1, " cm/s"], ["pressure", "Presión", 3, 50, 0.1, " psi"]] as const).map(([k, label, min, max, step, unit]) => (
+                {([["o2", "Oxygen", 10, 100, 1, " %"], ["gravity", "Gravity", 0, 1, 0.01, " g"], ["flow", "Ventilation", 0, 70, 1, " cm/s"], ["pressure", "Pressure", 3, 50, 0.1, " psi"]] as const).map(([k, label, min, max, step, unit]) => (
                   <label key={k}>
                     <span>{label} <b>{cond[k]}{unit}</b></span>
                     <input type="range" min={min} max={max} step={step} value={cond[k]} onChange={(e) => setCond({ ...cond, [k]: +e.target.value })} />
@@ -246,26 +246,26 @@ export default function Home() {
                 ))}
               </div>
               <details className="fine">
-                <summary className="mono">Ver la física en detalle</summary>
+                <summary className="mono">See the physics in detail</summary>
                 {!custom && <p className="muted small">{scenario?.note}</p>}
                 <ul className="notes">{notes.map((n) => <li key={n}>{n}</li>)}</ul>
               </details>
             </div>
           </div>
-          <button className="next" onClick={() => go("prediccion")}>Siguiente: ¿se prendería algo acá? ↓</button>
+          <button className="next" onClick={() => go("prediccion")}>Next: would something catch fire here? ↓</button>
         </section>
 
         <section id="prediccion" className="step" data-reveal>
-          <StepHead n={3} title="¿Se prendería algo acá?" hint="Nuestro modelo predice si un material de cabina sigue quemando. Está entrenado con datos de la ISS y validado con ensayos que nunca vio." />
-          <Predict cond={cond} place={custom ? "tu atmósfera" : scenario!.name} />
-          <button className="next" onClick={() => go("paso-3")}>Siguiente: ¿hay datos de NASA para esto? ↓</button>
+          <StepHead n={3} title="Would something catch fire here?" hint="Our model predicts whether a cabin material keeps burning. It was trained on ISS data and checked against tests it never saw." />
+          <Predict cond={cond} place={custom ? "your atmosphere" : scenario!.name} />
+          <button className="next" onClick={() => go("paso-3")}>Next: does NASA have data for this? ↓</button>
         </section>
 
         <section id="paso-3" className="step" data-reveal>
-          <StepHead n={4} title="¿Tenemos datos de NASA para esto?" hint="Buscamos experimentos del repositorio PSI hechos en condiciones parecidas." />
+          <StepHead n={4} title="Do we have NASA data for this?" hint="We look for experiments in the PSI repository that were run in similar conditions." />
           <div className="verdictbox">
             <p className="verdict" aria-live="polite">
-              {gaps === 0 ? <><b>Sí</b>hay experimentos cerca para los cuatro tipos de fuego.</> : <><b>{gaps} de 4</b>tipos de fuego no tienen experimentos cerca de esta atmósfera.</>}
+              {gaps === 0 ? <><b>Yes</b>there are nearby experiments for all four fire types.</> : <><b>{gaps} of 4</b>fire types have no experiments close to this atmosphere.</>}
             </p>
             <div className="cov">
               {cov.map((c) => (
@@ -275,45 +275,45 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            {cov.find((c) => c.fuel === "solid")?.status !== "cubierto" && cond.o2 > 23 && <p className="aside-note">NASA ya quemó materiales con más oxígeno en Saffire-V, Saffire-VI y SoFIE, pero esos datos todavía no están publicados en PSI.</p>}
+            {cov.find((c) => c.fuel === "solid")?.status !== "cubierto" && cond.o2 > 23 && <p className="aside-note">NASA has already burned materials at higher oxygen in Saffire-V, Saffire-VI and SoFIE, but that data is not published in PSI yet.</p>}
           </div>
 
           <details className="mapbox">
-            <summary><span className="mono">Ver el mapa completo</span><span className="muted small">Todos los experimentos según el oxígeno y la presión que usaron</span></summary>
+            <summary><span className="mono">See the full map</span><span className="muted small">All experiments by the oxygen and pressure they used</span></summary>
             <ul className="howto">
-              <li><i className="sw solid" style={cssVar(FUEL_VAR.solid)} />Cada caja es lo que probó un experimento.</li>
-              <li><i className="sw hab" />El rombo es dónde vas a vivir.</li>
-              <li><span className="howdot" />Si el rombo queda lejos de las cajas, no hay datos.</li>
+              <li><i className="sw solid" style={cssVar(FUEL_VAR.solid)} />Each box is what one experiment tested.</li>
+              <li><i className="sw hab" />The diamond is where you will live.</li>
+              <li><span className="howdot" />If the diamond is far from the boxes, there is no data.</li>
             </ul>
             <div className="legend">
               {FUELS.map((f) => <button key={f} className={hidden.has(f) ? "off" : ""} aria-pressed={!hidden.has(f)} onClick={() => toggle(f)}><i className={`sw ${f}`} style={cssVar(FUEL_VAR[f])} />{PLAIN[f][0]}</button>)}
-              <span><i className="sw incd" />Incidente</span>
+              <span><i className="sw incd" />Incident</span>
             </div>
             <div className="chartwrap">
               <Chart cond={cond} selected={selected} onPick={pick} setTip={setTip} hidden={hidden} />
               {tip && <div className="tip" style={{ left: tip.x + 14, top: tip.y + 14 }}><b>{tip.title}</b><br />{tip.body}</div>}
             </div>
-            <p className="caption">Cajas punteadas: experimentos que menciona el reto pero que no están en PSI. Tocá la leyenda para filtrar.</p>
+            <p className="caption">Dashed boxes are experiments named in the challenge that are not in PSI. Tap the legend to filter.</p>
           </details>
-          <button className="next" onClick={() => go("paso-4")}>Siguiente: qué experimentos sirven ↓</button>
+          <button className="next" onClick={() => go("paso-4")}>Next: which experiments help most ↓</button>
         </section>
 
         <section id="paso-4" className="step" data-reveal>
-          <StepHead n={5} title="¿Qué experimentos sirven más?" hint="Los ordenamos por qué tan parecidas fueron sus condiciones a las tuyas." />
+          <StepHead n={5} title="Which experiments help most?" hint="We sort them by how close their conditions were to yours." />
           <div className="top3">
             {ranked.slice(0, 3).map((r, i) => (
               <button key={r.inv.id} className="topcard" style={{ "--i": i } as React.CSSProperties} onClick={() => { setShowAll(true); setOpen(r.inv.id); setTimeout(() => go("ranking"), 50); }}>
                 <span className="toprank">{i + 1}</span>
-                <span className="mono muted">{PLAIN[r.inv.fuelType][0]} · {Math.round(r.score * 100)} % parecido</span>
+                <span className="mono muted">{PLAIN[r.inv.fuelType][0]} · {Math.round(r.score * 100)} % match</span>
                 <b>{r.inv.id}</b>
                 <span className="small clamp3">{r.inv.finding}</span>
-                <span className="mono small cardfoot">Ver detalle →</span>
+                <span className="mono small cardfoot">See details →</span>
               </button>
             ))}
           </div>
           <details id="ranking" className="mapbox" open={showAll} onToggle={(e) => setShowAll((e.target as HTMLDetailsElement).open)}>
-            <summary><span className="mono">Ver las {ranked.length} investigaciones</span><span className="muted small">Con condiciones, sensores y la ficha oficial de PSI</span></summary>
-            <div className="seg" role="group" aria-label="Enfoque">{FOCI.map(([f, l]) => <button key={f} aria-pressed={focus === f} className={focus === f ? "on" : ""} onClick={() => setFocus(f)}>{l}</button>)}</div>
+            <summary><span className="mono">See all {ranked.length} investigations</span><span className="muted small">With conditions, sensors and the official PSI record</span></summary>
+            <div className="seg" role="group" aria-label="Focus">{FOCI.map(([f, l]) => <button key={f} aria-pressed={focus === f} className={focus === f ? "on" : ""} onClick={() => setFocus(f)}>{l}</button>)}</div>
             <ol className="ranked">
               {ranked.map((r, i) => {
                 const { flight } = psiFor(r.inv.id);
@@ -324,7 +324,7 @@ export default function Home() {
                       <span className="rk mono">{pad(i + 1)}</span>
                       <i className={`sw ${r.inv.fuelType}`} style={cssVar(FUEL_VAR[r.inv.fuelType])} />
                       <span className="rname"><b>{r.inv.id}</b> <span className="muted">{r.inv.name}</span></span>
-                      <span className="bar" aria-label={`puntaje ${Math.round(r.total * 100)}`}><span style={{ width: `${r.total * 100}%` }} /></span>
+                      <span className="bar" aria-label={`score ${Math.round(r.total * 100)}`}><span style={{ width: `${r.total * 100}%` }} /></span>
                       <span className="num mono">{Math.round(r.total * 100)}</span>
                     </button>
                     {isOpen && (
@@ -332,20 +332,20 @@ export default function Home() {
                         <p>{r.inv.finding}</p>
                         <div className="detail">
                           <dl>
-                            <dt>Condiciones</dt><dd>O₂ {r.inv.o2.join("–")}% · {r.inv.pressure.join("–")} psi · flujo {r.inv.flow.join("–")} cm/s</dd>
-                            <dt>Distancia</dt><dd>{!r.deltaO2 && !r.deltaP && !r.deltaFlow ? "Dentro del rango ensayado" : [r.deltaO2 ? `${r.deltaO2 > 0 ? "+" : ""}${r.deltaO2.toFixed(0)} pts de O₂` : "", r.deltaP ? `${r.deltaP > 0 ? "+" : ""}${r.deltaP.toFixed(1)} psi` : "", r.deltaFlow ? `${r.deltaFlow.toFixed(0)} cm/s de flujo` : ""].filter(Boolean).join(", ") + " fuera del rango"}</dd>
-                            <dt>Combustible</dt><dd>{r.inv.fuels}</dd>
-                            <dt>Sensores</dt><dd>{r.inv.sensors}</dd>
-                            {r.inv.earth && <><dt>En la Tierra</dt><dd>{r.inv.earth}</dd></>}
+                            <dt>Conditions</dt><dd>O₂ {r.inv.o2.join("–")}% · {r.inv.pressure.join("–")} psi · flow {r.inv.flow.join("–")} cm/s</dd>
+                            <dt>Distance</dt><dd>{!r.deltaO2 && !r.deltaP && !r.deltaFlow ? "Inside the tested range" : [r.deltaO2 ? `${r.deltaO2 > 0 ? "+" : ""}${r.deltaO2.toFixed(0)} O₂ points` : "", r.deltaP ? `${r.deltaP > 0 ? "+" : ""}${r.deltaP.toFixed(1)} psi` : "", r.deltaFlow ? `${r.deltaFlow.toFixed(0)} cm/s of flow` : ""].filter(Boolean).join(", ") + " outside the range"}</dd>
+                            <dt>Fuel</dt><dd>{r.inv.fuels}</dd>
+                            <dt>Sensors</dt><dd>{r.inv.sensors}</dd>
+                            {r.inv.earth && <><dt>On Earth</dt><dd>{r.inv.earth}</dd></>}
                           </dl>
                           {flight ? (
                             <div className="psicard">
-                              <p className="mono"><span className="psibadge">FICHA PSI</span> {flight.psiId} · <a href={`https://doi.org/${flight.doi}`} target="_blank" rel="noreferrer">doi:{flight.doi}</a></p>
-                              {flight.hypothesis && <p lang="en" className="quote">“{clip(flight.hypothesis.replace(/^"|"$/g, ""), 260)}”</p>}
-                              <p className="mono muted">{flight.publications.length} publicaciones{flight.publications[0]?.link && <> · <a href={flight.publications[0].link} target="_blank" rel="noreferrer">ver la primera</a></>}</p>
+                              <p className="mono"><span className="psibadge">PSI RECORD</span> {flight.psiId} · <a href={`https://doi.org/${flight.doi}`} target="_blank" rel="noreferrer">doi:{flight.doi}</a></p>
+                              {flight.hypothesis && <p className="quote">“{clip(flight.hypothesis.replace(/^"|"$/g, ""), 260)}”</p>}
+                              <p className="mono muted">{flight.publications.length} publications{flight.publications[0]?.link && <> · <a href={flight.publications[0].link} target="_blank" rel="noreferrer">see the first one</a></>}</p>
                             </div>
                           ) : (
-                            <p className="mono muted small">{r.inv.inPsi ? "En PSI, sin ficha cargada." : "Mencionada en el reto, no está en PSI."}{(r.inv as { source?: string }).source && <> · <a href={(r.inv as { source?: string }).source} target="_blank" rel="noreferrer">fuente</a></>}</p>
+                            <p className="mono muted small">{r.inv.inPsi ? "In PSI, record not loaded yet." : "Named in the challenge, not in PSI."}{(r.inv as { source?: string }).source && <> · <a href={(r.inv as { source?: string }).source} target="_blank" rel="noreferrer">source</a></>}</p>
                           )}
                         </div>
                       </div>
@@ -355,42 +355,42 @@ export default function Home() {
               })}
             </ol>
           </details>
-          <button className="next" onClick={() => go("paso-5")}>Siguiente: preguntá lo que quieras ↓</button>
+          <button className="next" onClick={() => go("paso-5")}>Next: ask anything you want ↓</button>
         </section>
 
         <section id="paso-5" className="step" data-reveal>
-          <StepHead n={6} title="¿Te quedó una duda? Preguntá" hint="El copiloto contesta con los experimentos más cercanos a tu atmósfera y te dice cuál usó." />
+          <StepHead n={6} title="Still have a question? Ask" hint="The copilot answers using the experiments closest to your atmosphere and tells you which ones it used." />
           <div className="panel copilot">
             <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) ask(q); }} className="ask">
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ej.: ¿qué pasa si se corta la ventilación?" aria-label="Pregunta" />
-              <button disabled={loading || !q.trim()}>{loading ? "Buscando…" : "Preguntar"}</button>
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="E.g. what happens if the ventilation stops?" aria-label="Question" />
+              <button disabled={loading || !q.trim()}>{loading ? "Searching…" : "Ask"}</button>
             </form>
-            <div className="chips"><span className="chiplabel">Probá con</span>{QUESTIONS.slice(0, 3).map((x) => <button key={x} className="chip ghost" onClick={() => ask(x)} disabled={loading}>{x}</button>)}</div>
+            <div className="chips"><span className="chiplabel">Try</span>{QUESTIONS.slice(0, 3).map((x) => <button key={x} className="chip ghost" onClick={() => ask(x)} disabled={loading}>{x}</button>)}</div>
             {ans && (
               <div className="answer">
                 <p style={{ whiteSpace: "pre-wrap" }}>{ans.answer}</p>
-                <p className="mono muted small">Motor: {ans.engine} · Experimentos usados: {ans.cited.join(", ")}</p>
+                <p className="mono muted small">Engine: {ans.engine} · Experiments used: {ans.cited.join(", ")}</p>
               </div>
             )}
           </div>
         </section>
 
         <section id="incidentes" className="step extra" data-reveal>
-          <div className="sechead"><p className="kicker">Historia</p><h2>Incendios que ya pasaron</h2><p className="muted">Tocá uno para ver sus condiciones en los pasos de arriba.</p></div>
+          <div className="sechead"><p className="kicker">History</p><h2>Fires that already happened</h2><p className="muted">Tap one to see its conditions in the steps above.</p></div>
           <div className="cards">
             {SCENARIOS.filter((s) => s.kind === "incident").map((s, i) => (
               <button key={s.id} className="card" style={{ "--i": i } as React.CSSProperties} onClick={() => { pick(s); go("paso-2"); }}>
                 <span className="mono muted">{s.o2}% O₂ · {s.pressure} psi</span>
                 <b className="cardtitle">{s.name}</b>
                 <span className="small clamp3">{s.note}</span>
-                <span className="mono small cardfoot">Ver este caso →</span>
+                <span className="mono small cardfoot">See this case →</span>
               </button>
             ))}
           </div>
         </section>
 
         <section className="step extra" data-reveal>
-          <div className="sechead"><p className="kicker">En números</p><h2>Lo que encontramos</h2></div>
+          <div className="sechead"><p className="kicker">By the numbers</p><h2>What we found</h2></div>
           <div className="stats">
             {stats.map((s, i) => (
               <div key={s.label} className="stat" style={{ "--i": i } as React.CSSProperties}><span className="mono">{s.label}</span><b><CountUp value={s.value} /></b></div>
@@ -399,19 +399,19 @@ export default function Home() {
         </section>
 
         <section id="tierra" className="step extra" data-reveal>
-          <div className="sechead"><p className="kicker">En la Tierra</p><h2>Lo que ya se usa acá</h2></div>
+          <div className="sechead"><p className="kicker">On Earth</p><h2>What is already in use here</h2></div>
           <div className="earthgrid">
-            <div className="earthcard" style={{ "--i": 0 } as React.CSSProperties}><b>Niebla fina de agua</b><span>Extintores desarrollados para la ISS que hoy se usan en edificios y vehículos.</span></div>
-            <div className="earthcard" style={{ "--i": 1 } as React.CSSProperties}><b>Detectores de humo</b><span>Un detector de los 70 que distingue humo de polvo da menos falsas alarmas en minería e industria.</span></div>
-            <div className="earthcard" style={{ "--i": 2 } as React.CSSProperties}><b>Equipo de bomberos</b><span>Tanques de aire y ropa adaptados de la tecnología de trajes espaciales.</span></div>
+            <div className="earthcard" style={{ "--i": 0 } as React.CSSProperties}><b>Fine water mist</b><span>Extinguishers developed for the ISS that are now used in buildings and vehicles.</span></div>
+            <div className="earthcard" style={{ "--i": 1 } as React.CSSProperties}><b>Smoke detectors</b><span>A 1970s detector that tells smoke apart from dust gives fewer false alarms in mining and industry.</span></div>
+            <div className="earthcard" style={{ "--i": 2 } as React.CSSProperties}><b>Firefighter gear</b><span>Air tanks and protective clothing adapted from spacesuit technology.</span></div>
           </div>
         </section>
 
         <section id="equipo" className="step extra team" data-reveal>
           <div className="sechead">
-            <p className="kicker">Equipo</p>
+            <p className="kicker">Team</p>
             <h2>Equipo Dinamita</h2>
-            <p className="muted">Seis integrantes desde Argentina en NASA Space Apps 2026.</p>
+            <p className="muted">Six members from Argentina at NASA Space Apps 2026.</p>
           </div>
           <div className="crew">
             {TEAM.map(([name, handle], i) => (
@@ -425,7 +425,8 @@ export default function Home() {
         </section>
 
         <footer className="mono muted small">
-          Hecho por Equipo Dinamita, Argentina. {PSI_COUNT} investigaciones con ficha oficial de PSI. Rangos numéricos aproximados hasta cargar las matrices de ensayo. Sin datos de gravedad parcial: para la Luna y Marte, µg y 1g funcionan como cotas.
+          Made by Equipo Dinamita, Argentina. {PSI_COUNT} investigations with an official PSI record. Numeric ranges are approximate until we load the test matrices. There is no partial gravity data, so for the Moon and Mars we use µg and 1 g as bounds.
+          <br />Built with help from AI tools. The code was written with an AI coding assistant (Claude) and reviewed by the team, and the copilot answers are generated by Google Gemini from NASA data and our model. The prediction model was trained by the team on NASA data.
         </footer>
       </main>
     </>

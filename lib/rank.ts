@@ -48,20 +48,20 @@ export const pO2kPa = (c: Pick<Condition, "o2" | "pressure">) => (c.o2 / 100) * 
 export function physicsNotes(c: Condition): string[] {
   const notes: string[] = [];
   const p = pO2kPa(c);
-  notes.push(`Presión parcial de O₂ ≈ ${p.toFixed(1)} kPa (aire a nivel del mar ≈ 21.2 kPa).`);
+  notes.push(`O₂ partial pressure ≈ ${p.toFixed(1)} kPa (sea-level air ≈ 21.2 kPa).`);
   if (c.o2 > 23.5)
-    notes.push(`Con ${c.o2}% O₂, la fracción molar está ${Math.round(((c.o2 - 21) / 21) * 100)}% por encima del aire. Para sólidos, la inflamabilidad sigue a la fracción de O₂ más que a la presión parcial: hay menos N₂ que absorba calor y la llama es más caliente.`);
+    notes.push(`At ${c.o2}% O₂, the mole fraction is ${Math.round(((c.o2 - 21) / 21) * 100)}% above air. For solids, flammability follows the O₂ fraction more than the partial pressure. There is less N₂ to absorb heat, so the flame runs hotter.`);
   if (c.pressure < 12)
-    notes.push("Menor presión reduce algo la tasa de reacción y la radiación de hollín, pero no compensa el aumento de fracción de O₂.");
+    notes.push("Lower pressure slightly reduces reaction rate and soot radiation, but it does not offset the higher O₂ fraction.");
   if (c.gravity < 0.02) {
     notes.push(c.flow < 3
-      ? "Con el aire casi quieto, en 0 g el O₂ llega solo por difusión y la llama se puede ahogar por pérdida radiativa (BASS-II). Si arranca un ventilador, vuelve a prender."
-      : "En 0 g el flujo más peligroso ronda los 3 cm/s (BASS-II). Cortar la ventilación y dejar el aire casi quieto ayuda a ahogar la llama.");
+      ? "With nearly still air in 0 g, O₂ reaches the flame only by diffusion and the flame can die from radiative loss (BASS-II). If a fan starts, it can flare back up."
+      : "In 0 g the most dangerous flow is around 3 cm/s (BASS-II). Shutting off ventilation and leaving the air nearly still helps starve the flame.");
   } else {
     const natural = MODEL.Ub * Math.pow(c.gravity, MODEL.n);
-    notes.push(`A ${c.gravity} g la flotación mueve el aire por sí sola, unos ${natural.toFixed(1)} cm/s según nuestro modelo. Cortar la ventilación no deja el aire quieto, así que no alcanza para apagar un fuego.`);
+    notes.push(`At ${c.gravity} g buoyancy moves the air by itself, about ${natural.toFixed(1)} cm/s according to our model. Shutting off ventilation does not leave the air still, so it is not enough to put out a fire.`);
     if (c.gravity < 1)
-      notes.push(`En PSI no hay ensayos a ${c.gravity} g. Nuestro modelo se validó con ensayos en centrífuga publicados en 2024, que no están en PSI. LUCI y FM2 van a medir en ese rango.`);
+      notes.push(`PSI has no tests at ${c.gravity} g. Our model was validated against centrifuge tests published in 2024, which are not in PSI. LUCI and FM2 will measure in that range.`);
   }
   return notes;
 }

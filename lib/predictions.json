@@ -1534,7 +1534,7 @@
     22.614237049594987
    ]
   },
-  "Luna (0.16 g)": {
+  "Moon (0.16 g)": {
    "g": 0.16,
    "loc": [
     13.701681979293742,
@@ -1557,7 +1557,7 @@
     14.051391391050219
    ]
   },
-  "Marte (0.38 g)": {
+  "Mars (0.38 g)": {
    "g": 0.38,
    "loc": [
     13.909639556889687,
@@ -1580,7 +1580,7 @@
     14.354386460209732
    ]
   },
-  "Tierra (1 g)": {
+  "Earth (1 g)": {
    "g": 1.0,
    "loc": [
     14.886347703946958,
@@ -1627,7 +1627,7 @@
    ]
   },
   "rover": {
-   "label": "Rover lunar",
+   "label": "Lunar rover",
    "o2": 30,
    "flow": 5,
    "g": 0.16,
@@ -1648,7 +1648,7 @@
    ]
   },
   "moonbase": {
-   "label": "Base lunar",
+   "label": "Lunar base",
    "o2": 34,
    "flow": 5,
    "g": 0.16,
@@ -1669,7 +1669,7 @@
    ]
   },
   "mars": {
-   "label": "Hábitat en Marte",
+   "label": "Mars habitat",
    "o2": 34,
    "flow": 5,
    "g": 0.38,
@@ -1693,14 +1693,14 @@
  "validation": {
   "cv_interp": [
    {
-    "model": "Física (curva NASA)",
+    "model": "Physics (NASA curve)",
     "accuracy": 0.569,
     "AUC": 0.581,
     "log-loss": 0.678,
     "Brier": 0.243
    },
    {
-    "model": "Logística",
+    "model": "Logistic",
     "accuracy": 0.569,
     "AUC": 0.584,
     "log-loss": 0.715,
@@ -1716,14 +1716,14 @@
   ],
   "cv_block": [
    {
-    "model": "Física (curva NASA)",
+    "model": "Physics (NASA curve)",
     "accuracy": 0.569,
     "AUC": 0.581,
     "log-loss": 0.678,
     "Brier": 0.243
    },
    {
-    "model": "Logística",
+    "model": "Logistic",
     "accuracy": 0.549,
     "AUC": 0.626,
     "log-loss": 0.706,
@@ -1739,37 +1739,37 @@
   ],
   "external": [
    {
-    "model": "Física, n calibrado (leave-one-g-out)",
+    "model": "Physics, calibrated n (leave-one-g-out)",
     "accuracy": 0.812,
     "log-loss": 0.639,
     "Brier": 0.223
    },
    {
-    "model": "Física, teoría simple n = 1/3",
+    "model": "Physics, simple theory n = 1/3",
     "accuracy": 0.75,
     "log-loss": 0.641,
     "Brier": 0.224
    },
    {
-    "model": "XGBoost híbrido (O₂, u_ef)",
+    "model": "XGBoost hybrid (O₂, u_eff)",
     "accuracy": 0.625,
     "log-loss": 0.684,
     "Brier": 0.23
    },
    {
-    "model": "XGBoost sin física (O₂, ventilación)",
+    "model": "XGBoost without physics (O₂, ventilation)",
     "accuracy": 0.688,
     "log-loss": 0.626,
     "Brier": 0.217
    },
    {
-    "model": "Logística sin gravedad",
+    "model": "Logistic without gravity",
     "accuracy": 0.562,
     "log-loss": 1.072,
     "Brier": 0.359
    },
    {
-    "model": "Siempre 'se apaga' (clase mayoritaria)",
+    "model": "Always 'goes out' (majority class)",
     "accuracy": 0.562,
     "log-loss": 3.023,
     "Brier": 0.437
@@ -1793,33 +1793,33 @@
   "boundary_by_g": [
    {
     "g": 0.04,
-    "observado": 14.3,
-    "teoria_n_un_tercio": 13.859,
-    "calibrado_loo": 13.807
+    "observed": 14.3,
+    "theory_n_one_third": 13.859,
+    "calibrated_loo": 13.807
    },
    {
     "g": 0.16,
-    "observado": 13.755,
-    "teoria_n_un_tercio": 14.15,
-    "calibrado_loo": 13.702
+    "observed": 13.755,
+    "theory_n_one_third": 14.15,
+    "calibrated_loo": 13.702
    },
    {
     "g": 0.38,
-    "observado": 13.935,
-    "teoria_n_un_tercio": 14.436,
-    "calibrado_loo": 13.91
+    "observed": 13.935,
+    "theory_n_one_third": 14.436,
+    "calibrated_loo": 13.91
    },
    {
     "g": 0.65,
-    "observado": 14.505,
-    "teoria_n_un_tercio": 14.667,
-    "calibrado_loo": 14.318
+    "observed": 14.505,
+    "theory_n_one_third": 14.667,
+    "calibrated_loo": 14.318
    },
    {
     "g": 1.0,
-    "observado": 14.95,
-    "teoria_n_un_tercio": 14.886,
-    "calibrado_loo": 14.886
+    "observed": 14.95,
+    "theory_n_one_third": 14.886,
+    "calibrated_loo": 14.886
    }
   ],
   "pg_points": [
@@ -1907,6 +1907,6 @@
  },
  "sources": [
   "Olson S.L., Ferkul P.V., Combust. Flame 180 (2017) 217-229; NASA/TM-20210011385 (BASS-II)",
-  "Olson S.L. et al., Fire Safety Journal (2024): ensayos en centrífuga a gravedad parcial"
+  "Olson S.L. et al., Fire Safety Journal (2024): partial-gravity centrifuge tests"
  ]
 }

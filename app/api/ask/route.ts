@@ -6,29 +6,30 @@ import type { FuelType } from "@/lib/data.ts";
 import { psiFor, clip } from "@/lib/psi.ts";
 import { predict } from "@/lib/predict.ts";
 
-const SYSTEM = `Sos estudiante de doctorado en combustión en una universidad argentina y trabajás con los datos de microgravedad de NASA (PSI). Te consulta un colega ingeniero que está diseñando un hábitat. Le contestás directo y concreto, en español rioplatense con voseo, en un registro profesional: nada de malas palabras ni lunfardo.
+const SYSTEM = `You are a PhD student in combustion who works with NASA's microgravity data (PSI). A fellow engineer who is designing a habitat is asking you a question. Answer plainly and specifically, in English, in a professional register.
 
-Cómo responder:
-- Entre 4 y 8 oraciones, en prosa. Sin listas, sin títulos, sin negritas, sin emojis.
-- Escribí los números con dígitos y unidades: 34 %, 8.2 psi, 3.2 cm/s. Nunca en palabras.
-- Si la pregunta es si algo se prende, cuánto oxígeno hace falta o qué pasa con la ventilación, arrancá por la predicción [MODELO] y no la contradigas. Es un modelo propio validado con ensayos en gravedad parcial.
-- Usá solo las investigaciones del contexto y citalas como [ID] justo después del dato que sacás de ellas. Si un número viene del contexto, decí el número.
-- Arrancá por la respuesta. Nada de introducción ni de repetir la pregunta.
-- Si ninguna investigación cubre la condición pedida (coincidencia baja o fuera de rango en O₂, presión, flujo o gravedad), decilo de entrada: "No hay datos para esto" y explicá qué es lo más cercano y cuán lejos queda. Después proponé el experimento concreto que haría falta (combustible, O₂, presión, flujo).
-- Explicá el porqué físico solo si cambia la conclusión: difusión de O₂, pérdida radiativa, fracción molar de O₂ contra presión parcial, flujo de ventilación, flotación.
-- Cerrá con una sola recomendación práctica de prevención, detección o supresión. No resumas lo que ya dijiste.
-- Los rangos del contexto son aproximados. Si la respuesta depende de un número exacto, aclaralo en media frase.
+How to answer:
+- 4 to 8 sentences of prose. No lists, no headings, no bold, no emoji.
+- Write numbers as digits with units, like 34 %, 8.2 psi, 3.2 cm/s. Never spell them out.
+- If the question is about whether something ignites, how much oxygen it takes, or what ventilation does, start with the [MODEL] prediction and do not contradict it. It is our own model, validated against partial-gravity tests.
+- Use only the investigations in the context and cite them as [ID] right after the fact you take from them. If a number comes from the context, state the number.
+- Lead with the answer. No introduction and no restating the question.
+- Cite investigations by their "id" field (for example [FLEX-2], [BASS-II]), never by the PSI number.
+- If no investigation covers the requested condition and the question is not answered by [MODEL] (low match, or outside the range in O₂, pressure, flow or gravity), say so first with "No data for this", then say what the closest data is and how far off it is. After that, propose the specific experiment that would be needed (fuel, O₂, pressure, flow).
+- Explain the physics only when it changes the conclusion, for example O₂ diffusion, radiative loss, O₂ mole fraction versus partial pressure, ventilation flow, or buoyancy.
+- End with one practical recommendation for prevention, detection or suppression. Do not summarize what you already said.
+- Ranges in the context are approximate. If the answer depends on an exact number, say so in half a sentence.
 
-Evitá: guiones largos (—), "no solo… sino también", listas de tres por costumbre, "crucial", "clave", "fundamental", "cabe destacar", "es importante", "en resumen", "en este sentido", "a la hora de", "de cara a", gerundios encadenados, frases de asistente ("¡Buena pregunta!", "Espero que te sirva") y advertencias genéricas. Si no sabés algo, decí que no está en los datos y listo.`;
+Avoid em dashes (—), "not only... but also", reflexive lists of three, the words "crucial", "key", "fundamental", "delve", "in summary", "it is important to note", chains of -ing clauses, assistant phrases ("Great question!", "I hope this helps") and generic disclaimers. If you do not know something, say it is not in the data and stop there.`;
 
 const words = (s: string) => s.toLowerCase().normalize("NFD").replace(/[^\w\s-]/g, " ").split(/\s+/).filter((w) => w.length > 2);
 
 const INTENTS: [RegExp, Focus, FuelType[]][] = [
-  [/material|cabina|tela|plastic|solid|textil|espuma|cable/, "prevention", ["solid"]],
-  [/humo|deteccion|detector|sensor|alarma|polvo/, "detection", ["aerosol", "solid"]],
-  [/supres|extin|apagar|co2|helio|niebla|agua/, "suppression", ["liquid", "solid"]],
-  [/gas|fuga|propano|metano|hidrogeno/, "prevention", ["gas"]],
-  [/gota|liquid|combustible|spray/, "suppression", ["liquid"]],
+  [/material|cabina|cabin|tela|fabric|plastic|solid|textil|textile|espuma|foam|cable|wiring/, "prevention", ["solid"]],
+  [/humo|smoke|deteccion|detect|sensor|alarma|alarm|polvo|dust/, "detection", ["aerosol", "solid"]],
+  [/supres|suppress|extin|apagar|put out|co2|helio|helium|niebla|mist|agua|water/, "suppression", ["liquid", "solid"]],
+  [/gas|fuga|leak|propano|propane|metano|methane|hidrogeno|hydrogen/, "prevention", ["gas"]],
+  [/gota|droplet|liquid|combustible|fuel|spray/, "suppression", ["liquid"]],
 ];
 
 function retrieve(q: string, c: Condition) {
@@ -73,7 +74,7 @@ async function askOpenAICompatible(prompt: string): Promise<[string, string]> {
       last = `${model}: ${(e as Error).name === "TimeoutError" ? "timeout" : (e as Error).message}`;
     }
   }
-  throw new Error(last || "sin modelos disponibles");
+  throw new Error(last || "no models available");
 }
 
 async function askClaude(prompt: string) {
@@ -87,7 +88,7 @@ async function askClaude(prompt: string) {
     system: SYSTEM,
     messages: [{ role: "user", content: prompt }],
   });
-  if (msg.stop_reason === "refusal") return "El modelo no pudo responder esta consulta.";
+  if (msg.stop_reason === "refusal") return "The model could not answer this question.";
   return msg.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("\n");
 }
 
@@ -96,34 +97,34 @@ function offline(q: string, hits: ReturnType<typeof retrieve>, c: Condition) {
   const weak = top[0].score < 0.6;
   return [
     weak
-      ? `No hay datos: ninguna investigación del atlas cubre ${c.o2}% O₂ / ${c.pressure} psi / ${c.flow} cm/s. Lo más cercano:`
-      : `Lo más cercano a ${c.o2}% O₂ / ${c.pressure} psi / ${c.flow} cm/s:`,
-    ...top.map((h) => `[${h.inv.id}] (${Math.round(h.score * 100)} % de coincidencia) ${h.inv.finding}`),
+      ? `No data for this. No investigation in the atlas covers ${c.o2}% O₂ / ${c.pressure} psi / ${c.flow} cm/s. Closest matches:`
+      : `Closest matches to ${c.o2}% O₂ / ${c.pressure} psi / ${c.flow} cm/s:`,
+    ...top.map((h) => `[${h.inv.id}] (${Math.round(h.score * 100)} % match) ${h.inv.finding}`),
     ...physicsNotes(c).slice(0, 2),
   ].join("\n");
 }
 
 export async function POST(req: Request) {
   const { question, condition } = (await req.json()) as { question: string; condition: Condition };
-  if (!question?.trim()) return Response.json({ error: "Pregunta vacía" }, { status: 400 });
+  if (!question?.trim()) return Response.json({ error: "Empty question" }, { status: 400 });
   const hits = retrieve(question, condition);
   const context = hits.map((h) => ({
-    id: h.inv.id, nombre: h.inv.name, combustible: h.inv.fuels, O2_pct: h.inv.o2, presion_psi: h.inv.pressure,
-    flujo_cm_s: h.inv.flow, sensores: h.inv.sensors, hallazgo: h.inv.finding, coincidencia_condicion: +h.score.toFixed(2),
+    id: h.inv.id, name: h.inv.name, fuel: h.inv.fuels, O2_pct: h.inv.o2, pressure_psi: h.inv.pressure,
+    flow_cm_s: h.inv.flow, sensors: h.inv.sensors, finding: h.inv.finding, condition_match: +h.score.toFixed(2),
     ...(() => {
       const f = psiFor(h.inv.id).flight;
-      return f ? { ficha_psi: { id: f.psiId, doi: f.doi, objetivo_nasa: clip(f.objective, 500), hipotesis_nasa: clip(f.hypothesis, 400), enfoque_nasa: clip(f.approach, 500) } } : {};
+      return f ? { psi_record: { psi_number: f.psiId, doi: f.doi, nasa_objective: clip(f.objective, 500), nasa_hypothesis: clip(f.hypothesis, 400), nasa_approach: clip(f.approach, 500) } } : {};
     })(),
   }));
   const pr = predict(condition.o2, condition.flow, condition.gravity);
-  const model = `Predicción del modelo propio (física calibrada con BASS-II y validada con ensayos en centrífuga): para PMMA, O₂ mínimo para que siga quemando ${pr.limit[0].toFixed(1)} % (IC ${pr.limit[1].toFixed(1)}-${pr.limit[2].toFixed(1)}), probabilidad de que la llama se sostenga ${Math.round(pr.pBurn[0] * 100)} %, y si se corta la ventilación ${Math.round(pr.pBurnVentCut[0] * 100)} %. Si la usás, citala como [MODELO].`;
-  const prompt = `Condición del hábitat: ${JSON.stringify(condition)}\n${model}\nNotas físicas: ${physicsNotes(condition).join(" ")}\nContexto PSI:\n${JSON.stringify(context, null, 1)}\n\nPregunta: ${question}`;
+  const model = `Prediction from our own model (physics calibrated on BASS-II and validated against centrifuge tests). For PMMA, limiting oxygen for sustained burning is ${pr.limit[0].toFixed(1)} % (CI ${pr.limit[1].toFixed(1)}-${pr.limit[2].toFixed(1)}), probability that the flame is sustained is ${Math.round(pr.pBurn[0] * 100)} %, and ${Math.round(pr.pBurnVentCut[0] * 100)} % if ventilation is shut off. If you use it, cite it as [MODEL].`;
+  const prompt = `Habitat condition: ${JSON.stringify(condition)}\n${model}\nPhysics notes: ${physicsNotes(condition).join(" ")}\nPSI context:\n${JSON.stringify(context, null, 1)}\n\nQuestion: ${question}`;
   const cited = hits.map((h) => h.inv.id);
   try {
     if (process.env.OPENAI_MODEL) { const [answer, model] = await askOpenAICompatible(prompt); return Response.json({ answer, engine: model, cited }); }
     if (process.env.ANTHROPIC_API_KEY) return Response.json({ answer: await askClaude(prompt), engine: "Claude Opus 5.5", cited });
   } catch (e) {
-    return Response.json({ answer: offline(question, hits, condition), engine: `offline (LLM falló: ${(e as Error).message})`, cited });
+    return Response.json({ answer: offline(question, hits, condition), engine: `offline (LLM failed: ${(e as Error).message})`, cited });
   }
-  return Response.json({ answer: offline(question, hits, condition), engine: "offline · recuperación local", cited });
+  return Response.json({ answer: offline(question, hits, condition), engine: "offline · local retrieval", cited });
 }

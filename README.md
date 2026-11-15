@@ -1,58 +1,65 @@
-# Flame in Freefall · Atlas de inflamabilidad
+# Flame in Freefall · Flammability Atlas
 
-Dashboard para NASA Space Apps 2026. Ubica cada investigación de combustión de PSI en el espacio O₂ × presión × flujo, la compara con los hábitats de Artemis (base lunar, rover, Marte, traje) y con incidentes reales, rankea las investigaciones relevantes y muestra **dónde faltan datos**.
+Dashboard for NASA Space Apps 2026. It places each PSI combustion investigation in the space of O₂ × pressure × flow, compares it with the Artemis habitats (Moon base, rover, Mars, spacesuit) and with real incidents, ranks the most relevant investigations and shows **where data is missing**.
 
-## Correr
+## Run
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run check      # self-check del ranking
+npm run check      # ranking self-check
 ```
 
-### IA (opcional)
-El copiloto usa cualquier API compatible con OpenAI: ChatGPT, Gemini (gratis), Groq (gratis) u Ollama local. Copiá `.env.example` a `.env.local` y descomentá una opción. Sin nada configurado responde en modo offline con recuperación local.
+### AI (optional)
+The copilot works with any OpenAI-compatible API, such as ChatGPT, Gemini (free), Groq (free) or a local Ollama. Copy `.env.example` to `.env.local` and uncomment one option. With nothing configured it answers in offline mode using local retrieval.
 
-## Deploy (Vercel, gratis)
-1. Subir el repo a GitHub (`.env.local` no se sube).
-2. Importarlo en vercel.com, sin configuración extra.
-3. En Settings → Environment Variables cargar `OPENAI_BASE_URL`, `OPENAI_API_KEY` y `OPENAI_MODEL` (ver `.env.example`).
+## Deploy (Vercel, free)
+1. Push the repo to GitHub (`.env.local` is not uploaded).
+2. Import it on vercel.com with no extra configuration.
+3. In Settings → Environment Variables, add `OPENAI_BASE_URL`, `OPENAI_API_KEY` and `OPENAI_MODEL` (see `.env.example`).
 4. Redeploy.
 
-## Datos
-- `lib/data.ts`: 19 investigaciones (16 listadas en PSI y 3 ACME mencionadas en el reto) más 9 escenarios. **Los rangos numéricos son aproximados**, recopilados de documentación pública. Hay que reemplazarlos por las matrices de ensayo de PSI.
-- `lib/rank.ts`: puntaje = 70 % cercanía gaussiana (O₂ escala 10 pts, presión escala ½ octava, flujo escala 20 cm/s) + 30 % relevancia (prevención, detección, supresión 0–3). Cobertura: ≥ 0.6 cubierto, ≥ 0.2 parcial y el resto brecha.
+## Data
+- `lib/data.ts`: 19 investigations (16 listed in PSI and 3 ACME ones named in the challenge) plus 9 scenarios. **The numeric ranges are approximate**, collected from public documentation. They should be replaced with the PSI test matrices.
+- `lib/rank.ts`: score = 70 % Gaussian closeness (O₂ scale 10 pts, pressure scale ½ octave, flow scale 20 cm/s) + 30 % relevance (prevention, detection, suppression 0–3). Coverage is "covered" at ≥ 0.6, "partial" at ≥ 0.2 and a gap below that.
 
-## Modelo predictivo (`ml/`)
-`ml/flammability.ipynb` (fuente: `ml/flammability.py`, formato jupytext). Pregunta: ¿un material de cabina (PMMA) sigue quemando con este O₂, esta ventilación y esta gravedad?
-- **Datos:** curva límite de NASA y 51 ensayos de BASS-II en la ISS (Olson & Ferkul 2017, NASA/TM-20210011385) para entrenar; 16 ensayos en centrífuga a 0.04-1 g (Olson et al. 2024) solo para validar. Todo en `ml/data/flammability_data.json` con su cita.
-- **EDA:** los ensayos se hacen en el borde del límite y son ruidosos (11 pares casi idénticos con resultado opuesto; la propia curva de NASA acierta 55 %). Se puede predecir el límite, no cada ensayo.
-- **Modelo:** física L(u) = A + B/u + C·u anclada a la curva NASA, con flujo inducido por gravedad u = U_b·gⁿ. n calibrado leave-one-gravity-out. Comparado con regresión logística y XGBoost.
-- **Validación externa:** error del límite 0.16 pts de O₂, 13/16 ensayos bien (XGBoost: 69 %). A 1 g predice 14.9 % (literatura 15.0-15.4 %).
-- **Hallazgos:** la Luna cae justo en la ventilación más peligrosa; cortar la ventilación ahoga el fuego en la ISS pero no en la Luna; no existe un O₂ respirable que sea no inflamable para PMMA.
-- Correr: `python3 -m venv .venv && .venv/bin/pip install -r ml/requirements.txt && cd ml && ../.venv/bin/jupyter nbconvert --to notebook --execute --inplace flammability.ipynb` (en Mac, XGBoost necesita `brew install libomp`). Exporta `lib/predictions.json`, que usa la web.
+## Prediction model (`ml/`)
+`ml/flammability.ipynb` (source in `ml/flammability.py`, jupytext format). The question it answers is whether a cabin material (PMMA) keeps burning at a given O₂, ventilation and gravity.
+- **Data.** NASA limit curve and 51 BASS-II tests on the ISS (Olson & Ferkul 2017, NASA/TM-20210011385) for training. 16 centrifuge tests at 0.04-1 g (Olson et al. 2024) are used only for validation. Everything is in `ml/data/flammability_data.json` with its citation.
+- **EDA.** The tests are run right at the edge of the limit and they are noisy (11 nearly identical pairs with opposite results, and the NASA curve itself gets 55 % right). We can predict the limit, but not each single test.
+- **Model.** Physics curve L(u) = A + B/u + C·u anchored to the NASA curve, with gravity-driven flow u = U_b·gⁿ. The exponent n is calibrated with leave-one-gravity-out. We compared it with logistic regression and XGBoost.
+- **External validation.** Limit error of 0.16 O₂ points and 13/16 tests right (XGBoost gets 69 %). At 1 g it predicts 14.9 % (literature says 15.0-15.4 %).
+- **Findings.** The Moon falls right on the most dangerous ventilation. Turning off the ventilation smothers the fire on the ISS but not on the Moon. There is no breathable O₂ level where PMMA is non-flammable.
+- To run it: `python3 -m venv .venv && .venv/bin/pip install -r ml/requirements.txt && cd ml && ../.venv/bin/jupyter nbconvert --to notebook --execute --inplace flammability.ipynb` (on Mac, XGBoost needs `brew install libomp`). It exports `lib/predictions.json`, which the website uses.
 
-## Pitch 30 s
-> NASA propone que la base lunar tenga 34 % de oxígeno a 8 psi. En esa atmósfera las cosas se prenden mucho más fácil que en el aire. Y la pregunta que nos hicimos fue: ¿alguien probó cómo se quema algo ahí, en microgravedad? Juntamos los experimentos de fuego de NASA en un mapa de oxígeno y presión. Y en los datos públicos de PSI, los sólidos, que es de lo que está hecha una nave, solo se probaron con aire normal o menos oxígeno.
+## Use of AI
+- **Code and data extraction.** Most of the code was written with an AI coding assistant (Claude). We also used it to pull numbers out of public NASA papers and reports. The team reviewed the code and checked the extracted data against the original sources.
+- **Copilot.** The answers in step 6 are generated by Google Gemini through an OpenAI-compatible API. The prompt gives it the NASA experiments closest to the chosen atmosphere and our model's prediction, and it cites the experiments it used.
+- **Prediction model.** The flammability model is not an LLM. It is our own physics-based model, fit by the team to NASA data in `ml/flammability.ipynb`.
 
-## Guion 2 min
-**[0:00 Problema]**
-En 1967 se prendió fuego la cápsula del Apollo 1 en la plataforma y murieron los tres astronautas. En 1997 hubo un incendio en la Mir. Y este año sonó una alarma de humo en Orion, en Artemis II. En una nave no podés abrir la puerta y salir.
+## 30 s pitch
+> NASA is proposing that the Moon base have 34 % oxygen at 8 psi. In that atmosphere things catch fire much more easily than in normal air. So we asked ourselves whether anyone has actually tested how things burn there, in microgravity. We put NASA's fire experiments on a map of oxygen and pressure. In the public PSI data, solids, which is what a spacecraft is made of, have only been tested in normal air or with less oxygen.
 
-**[0:20 Datos]**
-NASA tiene muchos datos de fuego en microgravedad. Están en el repositorio PSI, experimentos de la ISS como BASS, FLEX, ACME, SAME y Saffire. El problema es que cada uno está en su formato. Nosotros tomamos 19 investigaciones y para cada una anotamos el combustible, el rango de oxígeno, la presión, el flujo de aire, los sensores y qué encontraron.
+## 2 min script
+**[0:00 Problem]**
+In 1967 the Apollo 1 capsule caught fire on the launch pad and all three astronauts died. In 1997 there was a fire on Mir. And this year a smoke alarm went off on Orion during Artemis II. On a spacecraft you can't just open the door and walk out.
+
+**[0:20 Data]**
+NASA has a lot of data on fire in microgravity. It's in the PSI repository, from ISS experiments like BASS, FLEX, ACME, SAME and Saffire. The problem is that each one uses its own format. We took 19 investigations and for each one we wrote down the fuel, the oxygen range, the pressure, the airflow, the sensors and what they found.
 
 **[0:40 Demo]**
-Les muestro. Elijo "Base lunar". Acá ven el mapa: cada caja es lo que ensayó un experimento, y el rombo es la base. Al costado está, por tipo de combustible, si hay datos cerca o no. Abajo, el ranking de qué experimentos sirven para esta atmósfera, y pueden ver por qué cada uno quedó donde quedó. Le pregunto al copiloto qué materiales son más riesgosos, y contesta citando cada experimento por su ID. Ahora elijo Apollo 1, y se ve en qué condiciones fue ese incendio comparado con lo que se midió después.
+Let me show you. I pick "Moon base". Here you see the map. Each box is what one experiment tested, and the diamond is the base. On the side you can see, for each fuel type, whether there is data nearby or not. Below that is the ranking of which experiments are useful for this atmosphere, and you can see why each one ended up where it did. I ask the copilot which materials are the most risky, and it answers citing each experiment by its ID. Now I pick Apollo 1, and you can see the conditions of that fire compared with what was measured later.
 
-**[1:10 Resultado]**
-Lo que encontramos: las condiciones de la ISS están bien cubiertas. En la zona de Artemis, para sólidos y humo no hay datos en PSI. NASA ya los midió en Saffire-V, Saffire-VI y SoFIE, pero todavía no los publicó ahí. Para gases hay algo, gracias a ACME. Y hay un dato que nos llamó la atención: BASS mostró que en microgravedad algunos materiales queman con menos oxígeno del que indica el ensayo estándar que se hace en la Tierra. O sea que ese ensayo puede no alcanzar.
+**[1:10 Result]**
+Here's what we found. ISS conditions are well covered. In the Artemis zone there is no data in PSI for solids and smoke. NASA already measured them in Saffire-V, Saffire-VI and SoFIE, but hasn't published them there yet. For gases there is some data, thanks to ACME. And one thing surprised us. BASS showed that in microgravity some materials burn with less oxygen than the standard test on Earth says. So that test might not be enough.
 
-**[1:35 Para qué sirve]**
-Esto sirve para decidir qué experimento hacer primero, por ejemplo Saffire con más oxígeno, o LUCI y FM2. Y le sirve a quien elige materiales y sensores para un hábitat. Y en la Tierra, mucho de esto ya volvió en forma de detectores de humo y equipo para bomberos. Gracias.
+**[1:35 Why it matters]**
+This helps decide which experiment to run first, for example Saffire with more oxygen, or LUCI and FM2. It also helps whoever picks materials and sensors for a habitat. And here on Earth, a lot of this has already come back as smoke detectors and firefighter gear. Thank you.
 
-## Pendiente
-- [x] Fichas oficiales PSI (ISA-Tab) de BASS, BASS-II, FLEX, FLEX-2, Saffire I/II, SAME y PSI-62: `python3 -I scripts/ingest_psi.py "<carpeta con los zips>"` genera `lib/psi-metadata.json`.
-- [ ] Fichas que faltan: ACME (BRE, S-Flames, E-FIELD), CFI, SPICE, SLICE, SAME-R, Saffire-III, DAFT.
-- [ ] Agregar datos reales: velocidad de propagación vs. flujo (BASS) y diámetro de extinción (FLEX) como gráficos de detalle.
-- [ ] Video de 2 min y slides.
+## To do
+- [x] Official PSI records (ISA-Tab) for BASS, BASS-II, FLEX, FLEX-2, Saffire I/II, SAME and PSI-62: `python3 -I scripts/ingest_psi.py "<folder with the zips>"` generates `lib/psi-metadata.json`.
+- [ ] Missing records: ACME (BRE, S-Flames, E-FIELD), CFI, SPICE, SLICE, SAME-R, Saffire-III, DAFT.
+- [ ] Add real data: spread rate vs. flow (BASS) and extinction diameter (FLEX) as detail charts.
+- [ ] 2 min video and slides.
+
+Made by Equipo Dinamita, Argentina.
