@@ -1,0 +1,11 @@
+import { INVESTIGATIONS, SCENARIOS } from "../lib/data.ts";
+import { coverage, conditionMatch } from "../lib/rank.ts";
+const iss = SCENARIOS.find((s) => s.id === "iss")!;
+const moon = SCENARIOS.find((s) => s.id === "moonbase")!;
+const issCov = coverage(INVESTIGATIONS, iss);
+const moonCov = coverage(INVESTIGATIONS, moon);
+console.assert(issCov.find((x) => x.fuel === "solid")!.status === "cubierto", "ISS solids should be covered");
+console.assert(moonCov.find((x) => x.fuel === "solid")!.status !== "cubierto", "Moon base solids should be a gap");
+console.assert(conditionMatch(INVESTIGATIONS[0], { o2: 20, pressure: 10, flow: 0, gravity: 0 }).score === 1, "inside range = 1");
+console.log("ISS:", issCov.map((x) => `${x.fuel}=${x.status}`).join(" "));
+console.log("Moon:", moonCov.map((x) => `${x.fuel}=${x.status}(${x.best?.inv.id} ${x.best?.score.toFixed(2)})`).join(" "));
