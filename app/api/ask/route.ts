@@ -1,3 +1,4 @@
+export const maxDuration = 60;
 import Anthropic from "@anthropic-ai/sdk";
 import { INVESTIGATIONS } from "@/lib/data.ts";
 import { rank, physicsNotes, type Condition, type Focus } from "@/lib/rank.ts";
@@ -46,17 +47,25 @@ function retrieve(q: string, c: Condition) {
 async function askOpenAICompatible(prompt: string): Promise<[string, string]> {
   const base = (process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1").replace(/\/$/, "");
   let last = "";
+  const deadline = Date.now() + 25_000;
   for (const model of process.env.OPENAI_MODEL!.split(",").map((m) => m.trim()).filter(Boolean)) {
-    const res = await fetch(`${base}/chat/completions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...(process.env.OPENAI_API_KEY ? { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` } : {}) },
-      body: JSON.stringify({ model, messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }] }),
-    });
-    if (res.ok) return [(await res.json()).choices[0].message.content as string, model];
-    last = `${model}: ${res.status} ${(await res.text()).slice(0, 120)}`;
-    if (![404, 429, 500, 502, 503].includes(res.status)) break;
+    const left = deadline - Date.now();
+    if (left < 3_000) break;
+    try {
+      const res = await fetch(`${base}/chat/completions`, {
+        method: "POST",
+        signal: AbortSignal.timeout(Math.min(15_000, left)),
+        headers: { "Content-Type": "application/json", ...(process.env.OPENAI_API_KEY ? { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` } : {}) },
+        body: JSON.stringify({ model, messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }] }),
+      });
+      if (res.ok) return [(await res.json()).choices[0].message.content as string, model];
+      last = `${model}: ${res.status} ${(await res.text()).slice(0, 120)}`;
+      if (![404, 429, 500, 502, 503].includes(res.status)) break;
+    } catch (e) {
+      last = `${model}: ${(e as Error).name === "TimeoutError" ? "timeout" : (e as Error).message}`;
+    }
   }
-  throw new Error(last);
+  throw new Error(last || "sin modelos disponibles");
 }
 
 async function askClaude(prompt: string) {

@@ -22,6 +22,14 @@ const PLAIN: Record<FuelType, [string, string]> = {
   aerosol: ["Humo", "lo que miden los detectores"],
 };
 const BODY: Record<string, Body> = { iss: "earth", rover: "moon", moonbase: "moon", mars: "mars", suit: "moon", apollo1: "earth", apollo13: "moon", mir: "earth", artemis2: "moon" };
+const TEAM = [
+  ["Oriana Letini", "orianaletini"],
+  ["Catalina Graffigna Lynch", "graf"],
+  ["Melanie Sampayo", "melanie_sampayo"],
+  ["Carolina Uesato", "caro.uca"],
+  ["María Lucía Báez", "lubaez"],
+  ["Guadalupe Nogueira", "guadanogueira_"],
+] as const;
 const STEPS = [["paso-1", "Hábitat"], ["paso-2", "Fuego"], ["paso-3", "Datos"], ["paso-4", "Experimentos"], ["paso-5", "Preguntar"]] as const;
 const gLabel = (g: number) => (g < 0.02 ? "sin gravedad" : Math.abs(g - 0.16) < 0.02 ? "gravedad lunar (1/6 de la Tierra)" : Math.abs(g - 0.38) < 0.02 ? "gravedad de Marte (1/3 de la Tierra)" : g >= 0.98 ? "gravedad terrestre" : `${g} g`);
 
@@ -392,8 +400,26 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="equipo" className="step extra team" data-reveal>
+          <div className="sechead">
+            <p className="kicker">Equipo</p>
+            <h2>Equipo Dinamita</h2>
+            <p className="muted">Seis integrantes desde Argentina en NASA Space Apps 2026.</p>
+          </div>
+          <div className="crew">
+            {TEAM.map(([name, handle], i) => (
+              <div key={handle} className="member" style={{ "--i": i } as React.CSSProperties}>
+                <span className="avatar" aria-hidden><span className="orbit" style={{ animationDuration: `${7 + i * 1.3}s`, animationDelay: `${-i * 0.9}s` }} />{name.split(" ").filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join("")}</span>
+                <b>{name}</b>
+                <span className="mono muted">@{handle}</span>
+                {i === 0 && <span className="owner mono">Team owner</span>}
+              </div>
+            ))}
+          </div>
+        </section>
+
         <footer className="mono muted small">
-          {PSI_COUNT} investigaciones con ficha oficial de PSI. Rangos numéricos aproximados hasta cargar las matrices de ensayo. Sin datos de gravedad parcial: para la Luna y Marte, µg y 1g funcionan como cotas.
+          Hecho por Equipo Dinamita, Argentina. {PSI_COUNT} investigaciones con ficha oficial de PSI. Rangos numéricos aproximados hasta cargar las matrices de ensayo. Sin datos de gravedad parcial: para la Luna y Marte, µg y 1g funcionan como cotas.
         </footer>
       </main>
     </>
