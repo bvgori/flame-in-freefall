@@ -19,7 +19,6 @@ Flame in Freefall is a web dashboard that answers one question for people design
 ## Link to Project Demo
 
 <!-- 7-slide deck (PDF in the GitHub repo, or Google Drive with "anyone with the link") -->
-TODO: export the deck as PDF, save it as docs/demo-slides.pdf in the repo and paste: https://github.com/bvgori/flame-in-freefall/blob/main/docs/demo-slides.pdf
 
 ---
 
