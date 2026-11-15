@@ -419,7 +419,6 @@ export default function Home() {
                 <span className="avatar" aria-hidden><span className="orbit" style={{ animationDuration: `${7 + i * 1.3}s`, animationDelay: `${-i * 0.9}s` }} />{name.split(" ").filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join("")}</span>
                 <b>{name}</b>
                 <span className="mono muted">@{handle}</span>
-                {i === 0 && <span className="owner mono">Team owner</span>}
               </div>
             ))}
           </div>

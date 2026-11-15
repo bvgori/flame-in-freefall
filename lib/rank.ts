@@ -1,4 +1,5 @@
 import type { Investigation, FuelType, Range } from "./data.ts";
+import { MODEL } from "./predict.ts";
 
 export type Condition = { o2: number; pressure: number; flow: number; gravity: number };
 export type Focus = "all" | "prevention" | "detection" | "suppression";
@@ -52,11 +53,15 @@ export function physicsNotes(c: Condition): string[] {
     notes.push(`Con ${c.o2}% O₂, la fracción molar está ${Math.round(((c.o2 - 21) / 21) * 100)}% por encima del aire. Para sólidos, la inflamabilidad sigue a la fracción de O₂ más que a la presión parcial: hay menos N₂ que absorba calor y la llama es más caliente.`);
   if (c.pressure < 12)
     notes.push("Menor presión reduce algo la tasa de reacción y la radiación de hollín, pero no compensa el aumento de fracción de O₂.");
-  if (c.flow < 3)
-    notes.push("Con flujo casi nulo, en µg el O₂ llega solo por difusión y la llama puede apagarse por pérdida radiativa (BASS-II). Pero un ventilador que arranque la reaviva.");
-  else if (c.flow <= 30)
-    notes.push("Flujos de 5–30 cm/s, típicos de ventilación de cabina, son el peor caso para propagación sobre sólidos en µg (BASS/BASS-II). Cortar la ventilación es una medida de supresión.");
-  if (c.gravity > 0 && c.gravity < 1)
-    notes.push(`A ${c.gravity} g no hay datos en PSI. Los ensayos en µg y en 1g acotan el comportamiento, E-FIELD Flames aporta solo una analogía parcial. Futuro: LUCI y FM2.`);
+  if (c.gravity < 0.02) {
+    notes.push(c.flow < 3
+      ? "Con el aire casi quieto, en 0 g el O₂ llega solo por difusión y la llama se puede ahogar por pérdida radiativa (BASS-II). Si arranca un ventilador, vuelve a prender."
+      : "En 0 g el flujo más peligroso ronda los 3 cm/s (BASS-II). Cortar la ventilación y dejar el aire casi quieto ayuda a ahogar la llama.");
+  } else {
+    const natural = MODEL.Ub * Math.pow(c.gravity, MODEL.n);
+    notes.push(`A ${c.gravity} g la flotación mueve el aire por sí sola, unos ${natural.toFixed(1)} cm/s según nuestro modelo. Cortar la ventilación no deja el aire quieto, así que no alcanza para apagar un fuego.`);
+    if (c.gravity < 1)
+      notes.push(`En PSI no hay ensayos a ${c.gravity} g. Nuestro modelo se validó con ensayos en centrífuga publicados en 2024, que no están en PSI. LUCI y FM2 van a medir en ese rango.`);
+  }
   return notes;
 }

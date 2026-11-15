@@ -322,7 +322,6 @@ footer { max-width: 760px; }
 .orbit { position: absolute; inset: -12px; border-radius: 50%; animation: spin 8s linear infinite; }
 .orbit::after { content: ""; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 @keyframes spin { to { transform: rotate(360deg); } }
-.owner { margin-top: 2px; font-size: 9px !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); border-radius: 4px; padding: 1px 5px; }
 .team .sechead h2 { font-size: clamp(30px, 4.5vw, 54px); background: linear-gradient(90deg, var(--ink), #7fa6ff 60%, var(--ink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 [data-reveal] .member { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; transition-delay: calc(var(--i, 0) * 80ms + 120ms); }
 [data-reveal].in .member { opacity: 1; transform: none; }

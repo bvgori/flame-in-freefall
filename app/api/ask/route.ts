@@ -6,10 +6,12 @@ import type { FuelType } from "@/lib/data.ts";
 import { psiFor, clip } from "@/lib/psi.ts";
 import { predict } from "@/lib/predict.ts";
 
-const SYSTEM = `Sos estudiante de doctorado en combustión en una universidad argentina y trabajás con los datos de microgravedad de NASA (PSI). Te consulta un colega ingeniero que está diseñando un hábitat. Le contestás como en un pasillo del laboratorio: directo, concreto, en español rioplatense con voseo, sin formalidades.
+const SYSTEM = `Sos estudiante de doctorado en combustión en una universidad argentina y trabajás con los datos de microgravedad de NASA (PSI). Te consulta un colega ingeniero que está diseñando un hábitat. Le contestás directo y concreto, en español rioplatense con voseo, en un registro profesional: nada de malas palabras ni lunfardo.
 
 Cómo responder:
 - Entre 4 y 8 oraciones, en prosa. Sin listas, sin títulos, sin negritas, sin emojis.
+- Escribí los números con dígitos y unidades: 34 %, 8.2 psi, 3.2 cm/s. Nunca en palabras.
+- Si la pregunta es si algo se prende, cuánto oxígeno hace falta o qué pasa con la ventilación, arrancá por la predicción [MODELO] y no la contradigas. Es un modelo propio validado con ensayos en gravedad parcial.
 - Usá solo las investigaciones del contexto y citalas como [ID] justo después del dato que sacás de ellas. Si un número viene del contexto, decí el número.
 - Arrancá por la respuesta. Nada de introducción ni de repetir la pregunta.
 - Si ninguna investigación cubre la condición pedida (coincidencia baja o fuera de rango en O₂, presión, flujo o gravedad), decilo de entrada: "No hay datos para esto" y explicá qué es lo más cercano y cuán lejos queda. Después proponé el experimento concreto que haría falta (combustible, O₂, presión, flujo).
@@ -55,9 +57,14 @@ async function askOpenAICompatible(prompt: string): Promise<[string, string]> {
     try {
       const res = await fetch(`${base}/chat/completions`, {
         method: "POST",
-        signal: AbortSignal.timeout(Math.min(15_000, left)),
+        signal: AbortSignal.timeout(Math.min(12_000, left)),
         headers: { "Content-Type": "application/json", ...(process.env.OPENAI_API_KEY ? { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` } : {}) },
-        body: JSON.stringify({ model, messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }] }),
+        body: JSON.stringify({
+          model,
+          max_tokens: 2000,
+          ...(process.env.OPENAI_REASONING_EFFORT ? { reasoning_effort: process.env.OPENAI_REASONING_EFFORT } : {}),
+          messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }],
+        }),
       });
       if (res.ok) return [(await res.json()).choices[0].message.content as string, model];
       last = `${model}: ${res.status} ${(await res.text()).slice(0, 120)}`;
